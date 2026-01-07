@@ -58,6 +58,31 @@ globalThis.AI_SDK_LOG_WARNINGS = false
 export namespace Server {
   const log = Log.create({ service: "server" })
 
+  function getContentType(path: string): string {
+    const ext = path.split(".").pop()?.toLowerCase()
+    const types: Record<string, string> = {
+      html: "text/html",
+      css: "text/css",
+      js: "application/javascript",
+      json: "application/json",
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      gif: "image/gif",
+      svg: "image/svg+xml",
+      ico: "image/x-icon",
+      woff: "font/woff",
+      woff2: "font/woff2",
+      ttf: "font/ttf",
+      wasm: "application/wasm",
+      webmanifest: "application/manifest+json",
+      aac: "audio/aac",
+      mp3: "audio/mpeg",
+    }
+    return types[ext ?? ""] ?? "application/octet-stream"
+  }
+
+
   let _url: URL | undefined
   let _corsWhitelist: string[] = []
 
@@ -2803,8 +2828,27 @@ export namespace Server {
         },
       )
       .all("/*", async (c) => {
-        const path = c.req.path
-        const response = await proxy(`https://app.opencode.ai${path}`, {
+        const reqPath = c.req.path === "/" ? "/index.html" : c.req.path
+
+        // Try to serve from local app folder (for UE integration)
+        try {
+          const exePath = process.execPath
+          const sep = exePath.includes("/") ? "/" : "\\"
+          const exeDir = exePath.substring(0, Math.max(exePath.lastIndexOf("/"), exePath.lastIndexOf("\\")))
+          const appPath = `${exeDir}${sep}app${reqPath.replace(/\//g, sep)}`
+          const localFile = Bun.file(appPath)
+          if (await localFile.exists()) {
+            const contentType = getContentType(reqPath)
+            return new Response(localFile, {
+              headers: { "Content-Type": contentType }
+            })
+          }
+        } catch {
+          // Local app files not available
+        }
+
+        // Fallback to proxy for development
+        const response = await proxy(`https://app.opencode.ai${reqPath}`, {
           ...c.req,
           headers: {
             ...c.req.raw.headers,
