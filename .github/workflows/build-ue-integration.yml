@@ -32,10 +32,11 @@ jobs:
             name: macOS ARM64
             target: opencode-darwin-arm64
             artifact: opencode-ue-macos-arm64
-          - os: macos-13
+          - os: macos-latest
             name: macOS x64
             target: opencode-darwin-x64
             artifact: opencode-ue-macos-x64
+            cross: true
           - os: ubuntu-latest
             name: Linux x64
             target: opencode-linux-x64
@@ -82,7 +83,14 @@ jobs:
 
       - name: Build CLI
         working-directory: packages/opencode
-        run: bun run script/build.ts --single
+        shell: bash
+        run: |
+          if [ "${{ matrix.cross }}" = "true" ]; then
+            # Cross-compile: build all targets and pick the right one
+            bun run script/build.ts
+          else
+            bun run script/build.ts --single
+          fi
 
       - name: Prepare release package
         shell: bash
