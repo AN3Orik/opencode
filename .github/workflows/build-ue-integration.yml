@@ -102,7 +102,8 @@ jobs:
           cp -r packages/opencode/dist/${{ matrix.target }}/* release/${{ matrix.artifact }}/
           
           # Copy App
-          cp -r packages/app/dist release/${{ matrix.artifact }}/app
+          mkdir -p release/${{ matrix.artifact }}/app
+          cp -r packages/app/dist release/${{ matrix.artifact }}/app/dist
 
       - name: Create ZIP (Windows)
         if: runner.os == 'Windows'

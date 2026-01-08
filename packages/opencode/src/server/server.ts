@@ -2835,32 +2835,36 @@ export namespace Server {
       .all("/*", async (c) => {
         const reqPath = c.req.path === "/" ? "/index.html" : c.req.path
 
-        // Try to serve from local app folder (for UE integration)
+        // Release mode: app/dist is sibling to bin/ folder
         try {
           const exePath = process.execPath
           const sep = exePath.includes("/") ? "/" : "\\"
           const exeDir = exePath.substring(0, Math.max(exePath.lastIndexOf("/"), exePath.lastIndexOf("\\")))
-          const appPath = `${exeDir}${sep}app${reqPath.replace(/\//g, sep)}`
+          const parentDir = exeDir.substring(0, Math.max(exeDir.lastIndexOf("/"), exeDir.lastIndexOf("\\")))
+          const appPath = `${parentDir}${sep}app${sep}dist${reqPath.replace(/\//g, sep)}`
           const localFile = Bun.file(appPath)
           if (await localFile.exists()) {
-            const contentType = getContentType(reqPath)
             return new Response(localFile, {
-              headers: { "Content-Type": contentType }
+              headers: { "Content-Type": getContentType(reqPath) }
             })
           }
-        } catch {
-          // Local app files not available
-        }
+        } catch { }
 
-        // Fallback to proxy for development
-        const response = await proxy(`https://app.opencode.ai${reqPath}`, {
-          ...c.req,
-          headers: {
-            ...c.req.raw.headers,
-            host: "app.opencode.ai",
-          },
-        })
-        return response
+        // Dev mode: app/dist relative to source
+        try {
+          const distPath = new URL(`../../../app/dist${reqPath}`, import.meta.url).pathname
+          const normalizedPath = process.platform === "win32" && distPath.startsWith("/")
+            ? distPath.slice(1)
+            : distPath
+          const distFile = Bun.file(normalizedPath)
+          if (await distFile.exists()) {
+            return new Response(distFile, {
+              headers: { "Content-Type": getContentType(reqPath) }
+            })
+          }
+        } catch { }
+
+        return new Response("Not found", { status: 404 })
       }),
   )
 

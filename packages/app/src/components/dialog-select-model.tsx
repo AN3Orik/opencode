@@ -4,6 +4,7 @@ import { useLocal } from "@/context/local"
 import { useDialog } from "@opencode-ai/ui/context/dialog"
 import { popularProviders } from "@/hooks/use-providers"
 import { Button } from "@opencode-ai/ui/button"
+import { IconButton } from "@opencode-ai/ui/icon-button"
 import { Tag } from "@opencode-ai/ui/tag"
 import { Dialog } from "@opencode-ai/ui/dialog"
 import { List } from "@opencode-ai/ui/list"
@@ -71,6 +72,7 @@ export const ModelSelectorPopover: Component<{
   children: JSX.Element
 }> = (props) => {
   const [open, setOpen] = createSignal(false)
+  const dialog = useDialog()
 
   return (
     <Kobalte open={open()} onOpenChange={setOpen} placement="top-start" gutter={8}>
@@ -78,12 +80,28 @@ export const ModelSelectorPopover: Component<{
       <Kobalte.Portal>
         <Kobalte.Content class="w-72 h-80 flex flex-col rounded-md border border-border-base bg-surface-raised-stronger-non-alpha shadow-md z-50 outline-none">
           <Kobalte.Title class="sr-only">Select model</Kobalte.Title>
+          <div class="flex items-center px-3 pt-2">
+            <span class="text-12-medium text-text-dimmed">Models</span>
+          </div>
           <ModelList provider={props.provider} onSelect={() => setOpen(false)} class="p-1" />
+          <div class="px-1 pb-1 border-t border-border-base">
+            <button
+              class="w-full flex items-center gap-2 px-2 py-1.5 text-13-regular text-text-dimmed hover:text-text-base hover:bg-surface-raised-stronger rounded transition-colors"
+              onClick={() => {
+                setOpen(false)
+                dialog.show(() => <DialogManageModels />)
+              }}
+            >
+              <span class="text-lg leading-none">+</span>
+              <span>Add custom model...</span>
+            </button>
+          </div>
         </Kobalte.Content>
       </Kobalte.Portal>
     </Kobalte>
   )
 }
+
 
 export const DialogSelectModel: Component<{ provider?: string }> = (props) => {
   const dialog = useDialog()

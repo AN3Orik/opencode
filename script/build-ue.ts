@@ -84,9 +84,9 @@ if (fs.existsSync(cliDistDir)) {
         // Copy CLI
         copyDirSync(src, dest)
 
-        // Copy App next to bin folder (so bin/../app works)
+        // Copy App next to bin folder (so bin/../app/dist works)
         if (fs.existsSync(appDistDir)) {
-            copyDirSync(appDistDir, path.join(dest, "app"))
+            copyDirSync(appDistDir, path.join(dest, "app", "dist"))
         }
 
         console.log(`  - ${platform}`)
