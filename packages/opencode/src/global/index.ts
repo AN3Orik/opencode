@@ -5,10 +5,13 @@ import os from "os"
 
 const app = "opencode"
 
-const data = path.join(xdgData!, app)
-const cache = path.join(xdgCache!, app)
-const config = path.join(xdgConfig!, app)
-const state = path.join(xdgState!, app)
+// Support custom storage directory via OPENCODE_DATA_HOME env var
+// When set, all paths (data, config, cache, state) are stored under this directory
+const baseDir = process.env.OPENCODE_DATA_HOME
+const data = baseDir ? path.join(baseDir, "data", app) : path.join(xdgData!, app)
+const cache = baseDir ? path.join(baseDir, "cache", app) : path.join(xdgCache!, app)
+const config = baseDir ? path.join(baseDir, "config", app) : path.join(xdgConfig!, app)
+const state = baseDir ? path.join(baseDir, "state", app) : path.join(xdgState!, app)
 
 export namespace Global {
   export const Path = {

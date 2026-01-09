@@ -1,3 +1,17 @@
+// Early --data-home parsing - must happen before any imports that load Global
+// This allows overriding the data storage path via CLI argument (fallback for env var)
+; (() => {
+  const eqArg = process.argv.find(a => a.startsWith("--data-home="))
+  if (eqArg) {
+    process.env.OPENCODE_DATA_HOME = eqArg.split("=").slice(1).join("=").replace(/^["']|["']$/g, "")
+  } else {
+    const idx = process.argv.indexOf("--data-home")
+    if (idx !== -1 && process.argv[idx + 1]) {
+      process.env.OPENCODE_DATA_HOME = process.argv[idx + 1]
+    }
+  }
+})()
+
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
 import { RunCommand } from "./cli/cmd/run"
@@ -56,6 +70,10 @@ const cli = yargs(hideBin(process.argv))
     describe: "log level",
     type: "string",
     choices: ["DEBUG", "INFO", "WARN", "ERROR"],
+  })
+  .option("data-home", {
+    describe: "custom data storage directory (for project-local sessions)",
+    type: "string",
   })
   .middleware(async (opts) => {
     await Log.init({
