@@ -78,7 +78,7 @@ export const ModelSelectorPopover: Component<{
     <Kobalte open={open()} onOpenChange={setOpen} placement="top-start" gutter={8}>
       <Kobalte.Trigger as="div">{props.children}</Kobalte.Trigger>
       <Kobalte.Portal>
-        <Kobalte.Content class="w-72 h-80 flex flex-col rounded-md border border-border-base bg-surface-raised-stronger-non-alpha shadow-md z-50 outline-none">
+        <Kobalte.Content class="w-72 h-80 flex flex-col rounded-md border border-border-base bg-surface-raised-stronger-non-alpha shadow-md z-50 outline-none overflow-hidden">
           <Kobalte.Title class="sr-only">Select model</Kobalte.Title>
           <div class="flex items-center px-3 pt-2">
             <span class="text-12-medium text-text-dimmed">Models</span>
