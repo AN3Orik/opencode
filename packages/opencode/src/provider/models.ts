@@ -78,10 +78,26 @@ export namespace ModelsDev {
   export async function get() {
     refresh()
     const file = Bun.file(filepath)
-    const result = await file.json().catch(() => {})
+    const result = await file.json().catch(() => { })
     if (result) return result as Record<string, Provider>
-    const json = await data()
-    return JSON.parse(json) as Record<string, Provider>
+
+    // Fallback: fetch directly if macro/cache unavailable
+    try {
+      if (typeof data === 'function') {
+        const json = await data()
+        return JSON.parse(json) as Record<string, Provider>
+      }
+    } catch { }
+
+    // Direct fetch fallback
+    const response = await fetch("https://models.dev/api.json").catch(() => null)
+    if (response?.ok) {
+      const json = await response.text()
+      await Bun.write(file, json)
+      return JSON.parse(json) as Record<string, Provider>
+    }
+
+    return {} as Record<string, Provider>
   }
 
   export async function refresh() {
