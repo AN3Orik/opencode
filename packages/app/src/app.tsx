@@ -50,10 +50,11 @@ const defaultServerUrl = iife(() => {
 })
 
 export function AppBaseProviders(props: ParentProps) {
+  const themeParam = new URLSearchParams(document.location.search).get("theme")
   return (
     <MetaProvider>
       <Font />
-      <ThemeProvider>
+      <ThemeProvider defaultTheme={themeParam ?? undefined}>
         <ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
           <DialogProvider>
             <MarkedProvider>

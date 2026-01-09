@@ -1,0 +1,80 @@
+{
+    "$schema": "https://opencode.ai/desktop-theme.json",
+    "name": "Unreal Engine",
+    "id": "ue",
+    "light": {
+        "seeds": {
+            "neutral": "#F0F0F0",
+            "primary": "#0070E0",
+            "success": "#44D044",
+            "warning": "#FF7A00",
+            "error": "#DC0909",
+            "info": "#0070E0",
+            "interactive": "#0070E0",
+            "diffAdd": "#44D044",
+            "diffDelete": "#DC0909"
+        },
+        "overrides": {
+            "background-base": "#FFF",
+            "background-weak": "#F8F8F8",
+            "background-strong": "#F0F0F0",
+            "background-stronger": "#E8E8E8",
+            "border-weak-base": "#E8E8E8",
+            "border-base": "#D0D0D0",
+            "border-strong-base": "#A0A0A0",
+            "text-base": "#101010",
+            "text-weak": "#A0A0A0",
+            "text-strong": "#000000"
+        }
+    },
+    "dark": {
+        "seeds": {
+            "neutral": "#242424",
+            "primary": "#0070E0",
+            "success": "#44D044",
+            "warning": "#FF7A00",
+            "error": "#DC0909",
+            "info": "#0070E0",
+            "interactive": "#0070E0",
+            "diffAdd": "#1E4620",
+            "diffDelete": "#462020"
+        },
+        "overrides": {
+            "background-base": "#242424",
+            "background-weak": "#2F2F2F",
+            "background-strong": "#1A1A1A",
+            "background-stronger": "#242424",
+            "surface-base": "#1E1E1E",
+            "surface-raised-base-hover": "#575757",
+            "input-base": "#0F0F0F",
+            "input-hover": "#1A1A1A",
+            "input-focus": "#0F0F0F",
+            "button-secondary-base": "#383838",
+            "button-secondary-hover": "#575757",
+            "button-ghost-hover": "#575757",
+            "button-ghost-hover2": "#808080",
+            "border-weak-base": "#383838",
+            "border-weak-hover": "#575757",
+            "border-weak-active": "#606060",
+            "border-base": "#4D4D4D",
+            "border-hover": "#575757",
+            "border-active": "#606060",
+            "border-strong-base": "#666666",
+            "text-base": "#C0C0C0",
+            "text-weak": "#808080",
+            "text-strong": "#FFFFFF",
+            "text-weaker": "#606060",
+            "syntax-string": "#E6D088",
+            "syntax-primitive": "#569CD6",
+            "syntax-property": "#9CDCFE",
+            "syntax-type": "#4EC9B0",
+            "syntax-constant": "#4FC1FF",
+            "syntax-info": "#9CDCFE",
+            "markdown-heading": "#FFFFFF",
+            "markdown-text": "#C0C0C0",
+            "markdown-link": "#3794FF",
+            "markdown-code": "#D7BA7D",
+            "markdown-block-quote": "#6A9955"
+        }
+    }
+}
