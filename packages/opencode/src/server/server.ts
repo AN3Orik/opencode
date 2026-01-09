@@ -2841,8 +2841,6 @@ export namespace Server {
               })
             })
           })
-        },
-      )
       .all("/*", async (c) => {
         const reqPath = c.req.path === "/" ? "/index.html" : c.req.path
 
