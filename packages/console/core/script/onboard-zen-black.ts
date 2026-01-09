@@ -39,6 +39,12 @@ if (amountInCents !== 20000) {
   process.exit(1)
 }
 
+const subscriptionData = await Billing.stripe().subscriptions.retrieve(subscription.id, { expand: ["discounts"] })
+const couponID =
+  typeof subscriptionData.discounts[0] === "string"
+    ? subscriptionData.discounts[0]
+    : subscriptionData.discounts[0]?.coupon?.id
+
 // Check if subscription is already tied to another workspace
 const existingSubscription = await Database.use((tx) =>
   tx
@@ -122,6 +128,7 @@ await Database.transaction(async (tx) => {
     .set({
       customerID,
       subscriptionID,
+      subscriptionCouponID: couponID,
       paymentMethodID,
       paymentMethodLast4,
       paymentMethodType,
@@ -143,6 +150,10 @@ await Database.transaction(async (tx) => {
     customerID,
     invoiceID,
     paymentID,
+    enrichment: {
+      type: "subscription",
+      couponID,
+    },
   })
 })
 
