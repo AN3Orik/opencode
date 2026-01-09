@@ -42,6 +42,12 @@ export type ReviewDiffStyle = "unified" | "split"
 export const { use: useLayout, provider: LayoutProvider } = createSimpleContext({
   name: "Layout",
   init: () => {
+    const params = new URLSearchParams(window.location.search)
+    const fixedProject = {
+      enabled: params.get("fixedProject") === "true",
+      dir: params.get("dir"),
+    }
+
     const globalSdk = useGlobalSDK()
     const globalSync = useGlobalSync()
     const server = useServer()
@@ -290,14 +296,16 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
         },
       },
       sidebar: {
-        opened: createMemo(() => store.sidebar.opened),
+        opened: createMemo(() => (fixedProject.enabled ? true : store.sidebar.opened)),
         open() {
           setStore("sidebar", "opened", true)
         },
         close() {
+          if (fixedProject.enabled) return
           setStore("sidebar", "opened", false)
         },
         toggle() {
+          if (fixedProject.enabled) return
           setStore("sidebar", "opened", (x) => !x)
         },
         width: createMemo(() => store.sidebar.width),
@@ -479,6 +487,7 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
           },
         }
       },
+      fixedProject,
     }
   },
 })

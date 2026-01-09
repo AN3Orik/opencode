@@ -1,5 +1,5 @@
 import { useGlobalSync } from "@/context/global-sync"
-import { createMemo, For, Match, Show, Switch } from "solid-js"
+import { createMemo, For, Match, Show, Switch, onMount } from "solid-js"
 import { Button } from "@opencode-ai/ui/button"
 import { Logo } from "@opencode-ai/ui/logo"
 import { useLayout } from "@/context/layout"
@@ -21,6 +21,12 @@ export default function Home() {
   const navigate = useNavigate()
   const server = useServer()
   const homedir = createMemo(() => sync.data.path.home)
+
+  onMount(() => {
+    if (layout.fixedProject?.enabled && layout.fixedProject?.dir) {
+      openProject(layout.fixedProject.dir)
+    }
+  })
 
   function openProject(directory: string) {
     layout.projects.open(directory)

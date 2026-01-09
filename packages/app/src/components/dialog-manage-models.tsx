@@ -4,11 +4,28 @@ import { Switch } from "@opencode-ai/ui/switch"
 import type { Component } from "solid-js"
 import { useLocal } from "@/context/local"
 import { popularProviders } from "@/hooks/use-providers"
+import { useDialog } from "@opencode-ai/ui/context/dialog"
+import { Button } from "@opencode-ai/ui/button"
+import { DialogSelectProvider } from "./dialog-select-provider"
 
 export const DialogManageModels: Component = () => {
   const local = useLocal()
+  const dialog = useDialog()
   return (
-    <Dialog title="Manage models" description="Customize which models appear in the model selector.">
+    <Dialog
+      title="Manage models"
+      description="Customize which models appear in the model selector."
+      action={
+        <Button
+          class="h-7 -my-1 text-14-medium"
+          icon="plus-small"
+          tabIndex={-1}
+          onClick={() => dialog.show(() => <DialogSelectProvider />)}
+        >
+          Connect provider
+        </Button>
+      }
+    >
       <List
         search={{ placeholder: "Search models", autofocus: true }}
         emptyMessage="No model results"

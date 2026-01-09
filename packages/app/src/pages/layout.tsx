@@ -998,9 +998,11 @@ export default function Layout(props: ParentProps) {
                         >
                           <DropdownMenu.ItemLabel>Edit project</DropdownMenu.ItemLabel>
                         </DropdownMenu.Item>
-                        <DropdownMenu.Item onSelect={() => closeProject(props.project.worktree)}>
-                          <DropdownMenu.ItemLabel>Close project</DropdownMenu.ItemLabel>
-                        </DropdownMenu.Item>
+                        <Show when={!layout.fixedProject?.enabled}>
+                          <DropdownMenu.Item onSelect={() => closeProject(props.project.worktree)}>
+                            <DropdownMenu.ItemLabel>Close project</DropdownMenu.ItemLabel>
+                          </DropdownMenu.Item>
+                        </Show>
                       </DropdownMenu.Content>
                     </DropdownMenu.Portal>
                   </DropdownMenu>
@@ -1088,7 +1090,7 @@ export default function Layout(props: ParentProps) {
     return (
       <div class="flex flex-col self-stretch h-full items-center justify-between overflow-hidden min-h-0">
         <div class="flex flex-col items-start self-stretch gap-4 min-h-0">
-          <Show when={!sidebarProps.mobile}>
+          <Show when={!sidebarProps.mobile && !layout.fixedProject?.enabled}>
             <div
               classList={{
                 "border-b border-border-weak-base w-full h-12 ml-px flex items-center pl-1.75 shrink-0": true,
@@ -1102,43 +1104,45 @@ export default function Layout(props: ParentProps) {
           </Show>
           <div class="flex flex-col items-start self-stretch gap-4 px-2 overflow-hidden min-h-0">
             <Show when={!sidebarProps.mobile}>
-              <TooltipKeybind
-                class="shrink-0"
-                placement="right"
-                title="Toggle sidebar"
-                keybind={command.keybind("sidebar.toggle")}
-                inactive={expanded()}
-              >
-                <Button
-                  variant="ghost"
-                  size="large"
-                  class="group/sidebar-toggle shrink-0 w-full text-left justify-start rounded-lg px-2"
-                  onClick={layout.sidebar.toggle}
+              <Show when={!layout.fixedProject?.enabled}>
+                <TooltipKeybind
+                  class="shrink-0"
+                  placement="right"
+                  title="Toggle sidebar"
+                  keybind={command.keybind("sidebar.toggle")}
+                  inactive={expanded()}
                 >
-                  <div class="relative -ml-px flex items-center justify-center size-4 [&>*]:absolute [&>*]:inset-0">
-                    <Icon
-                      name={layout.sidebar.opened() ? "layout-left" : "layout-right"}
-                      size="small"
-                      class="group-hover/sidebar-toggle:hidden"
-                    />
-                    <Icon
-                      name={layout.sidebar.opened() ? "layout-left-partial" : "layout-right-partial"}
-                      size="small"
-                      class="hidden group-hover/sidebar-toggle:inline-block"
-                    />
-                    <Icon
-                      name={layout.sidebar.opened() ? "layout-left-full" : "layout-right-full"}
-                      size="small"
-                      class="hidden group-active/sidebar-toggle:inline-block"
-                    />
-                  </div>
-                  <Show when={layout.sidebar.opened()}>
-                    <div class="hidden group-hover/sidebar-toggle:block group-active/sidebar-toggle:block text-text-base">
-                      Toggle sidebar
+                  <Button
+                    variant="ghost"
+                    size="large"
+                    class="group/sidebar-toggle shrink-0 w-full text-left justify-start rounded-lg px-2"
+                    onClick={layout.sidebar.toggle}
+                  >
+                    <div class="relative -ml-px flex items-center justify-center size-4 [&>*]:absolute [&>*]:inset-0">
+                      <Icon
+                        name={layout.sidebar.opened() ? "layout-left" : "layout-right"}
+                        size="small"
+                        class="group-hover/sidebar-toggle:hidden"
+                      />
+                      <Icon
+                        name={layout.sidebar.opened() ? "layout-left-partial" : "layout-right-partial"}
+                        size="small"
+                        class="hidden group-hover/sidebar-toggle:inline-block"
+                      />
+                      <Icon
+                        name={layout.sidebar.opened() ? "layout-left-full" : "layout-right-full"}
+                        size="small"
+                        class="hidden group-active/sidebar-toggle:inline-block"
+                      />
                     </div>
-                  </Show>
-                </Button>
-              </TooltipKeybind>
+                    <Show when={layout.sidebar.opened()}>
+                      <div class="hidden group-hover/sidebar-toggle:block group-active/sidebar-toggle:block text-text-base">
+                        Toggle sidebar
+                      </div>
+                    </Show>
+                  </Button>
+                </TooltipKeybind>
+              </Show>
             </Show>
             <DragDropProvider
               onDragStart={handleDragStart}
@@ -1155,7 +1159,13 @@ export default function Layout(props: ParentProps) {
                 class="w-full min-w-8 flex flex-col gap-2 min-h-0 overflow-y-auto no-scrollbar"
               >
                 <SortableProvider ids={layout.projects.list().map((p) => p.worktree)}>
-                  <For each={layout.projects.list()}>
+                  <For
+                    each={
+                      layout.fixedProject?.enabled
+                        ? layout.projects.list().filter((p) => p.worktree === layout.fixedProject?.dir)
+                        : layout.projects.list()
+                    }
+                  >
                     {(project) => <SortableProject project={project} mobile={sidebarProps.mobile} />}
                   </For>
                 </SortableProvider>
@@ -1201,28 +1211,59 @@ export default function Layout(props: ParentProps) {
               </Tooltip>
             </Match>
           </Switch>
-          <Tooltip
-            placement="right"
-            value={
-              <div class="flex items-center gap-2">
-                <span>Open project</span>
-                <Show when={!sidebarProps.mobile}>
-                  <span class="text-icon-base text-12-medium">{command.keybind("project.open")}</span>
-                </Show>
-              </div>
+          <Show
+            when={!layout.fixedProject?.enabled}
+            fallback={
+              <Tooltip
+                placement="right"
+                value={
+                  <div class="flex items-center gap-2">
+                    <span>New session</span>
+                    <Show when={!sidebarProps.mobile}>
+                      <span class="text-icon-base text-12-medium">{command.keybind("session.new")}</span>
+                    </Show>
+                  </div>
+                }
+                inactive={expanded()}
+              >
+                <Button
+                  class="flex w-full text-left justify-start text-text-base stroke-[1.5px] rounded-lg px-2"
+                  variant="ghost"
+                  size="large"
+                  icon="plus-small"
+                  onClick={() => {
+                    const dir = layout.fixedProject?.dir
+                    if (dir) navigate(`/${base64Encode(dir)}/session`)
+                  }}
+                >
+                  <Show when={expanded()}>New session</Show>
+                </Button>
+              </Tooltip>
             }
-            inactive={expanded()}
           >
-            <Button
-              class="flex w-full text-left justify-start text-text-base stroke-[1.5px] rounded-lg px-2"
-              variant="ghost"
-              size="large"
-              icon="folder-add-left"
-              onClick={chooseProject}
+            <Tooltip
+              placement="right"
+              value={
+                <div class="flex items-center gap-2">
+                  <span>Open project</span>
+                  <Show when={!sidebarProps.mobile}>
+                    <span class="text-icon-base text-12-medium">{command.keybind("project.open")}</span>
+                  </Show>
+                </div>
+              }
+              inactive={expanded()}
             >
-              <Show when={expanded()}>Open project</Show>
-            </Button>
-          </Tooltip>
+              <Button
+                class="flex w-full text-left justify-start text-text-base stroke-[1.5px] rounded-lg px-2"
+                variant="ghost"
+                size="large"
+                icon="folder-add-left"
+                onClick={chooseProject}
+              >
+                <Show when={expanded()}>Open project</Show>
+              </Button>
+            </Tooltip>
+          </Show>
           <Tooltip placement="right" value="Share feedback" inactive={expanded()}>
             <Button
               as={"a"}
