@@ -24,13 +24,17 @@ export default function Home() {
 
   onMount(() => {
     if (layout.fixedProject?.enabled && layout.fixedProject?.dir) {
-      openProject(layout.fixedProject.dir)
+      openProject(layout.fixedProject.dir, layout.fixedProject.session)
     }
   })
 
-  function openProject(directory: string) {
+  function openProject(directory: string, sessionId?: string | null) {
     layout.projects.open(directory)
-    navigate(`/${base64Encode(directory)}`)
+    if (sessionId) {
+      navigate(`/${base64Encode(directory)}/session/${sessionId}`)
+    } else {
+      navigate(`/${base64Encode(directory)}`)
+    }
   }
 
   async function chooseProject() {

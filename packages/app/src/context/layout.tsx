@@ -48,6 +48,7 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
     const fixedProject = {
       enabled: params.get("fixedProject") === "true",
       dir: params.get("dir"),
+      session: params.get("session"),
     }
 
     const globalSdk = useGlobalSDK()
