@@ -82,6 +82,7 @@ export namespace ModelsDev {
     const result = await file.json().catch(() => { })
     if (result) return result as Record<string, Provider>
 
+
     // Fallback: fetch directly if macro/cache unavailable
     try {
       if (typeof data === 'function') {
@@ -99,6 +100,7 @@ export namespace ModelsDev {
     }
 
     return {} as Record<string, Provider>
+
   }
 
   export async function refresh() {
