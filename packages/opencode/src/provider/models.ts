@@ -79,10 +79,8 @@ export namespace ModelsDev {
   export async function get() {
     refresh()
     const file = Bun.file(filepath)
-    const result = await file.json().catch(() => { })
+    const result = await file.json().catch(() => {})
     if (result) return result as Record<string, Provider>
-
-
     // Fallback: fetch directly if macro/cache unavailable
     try {
       if (typeof data === 'function') {

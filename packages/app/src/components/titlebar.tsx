@@ -87,19 +87,22 @@ export function Titlebar() {
           class="xl:hidden size-8 rounded-md"
           onClick={layout.mobileSidebar.toggle}
         />
-        <TooltipKeybind
-          class="hidden xl:flex shrink-0 ml-14"
-          placement="bottom"
-          title="Toggle sidebar"
-          keybind={command.keybind("sidebar.toggle")}
-        >
-          <IconButton
-            icon={layout.sidebar.opened() ? "layout-left" : "layout-right"}
-            variant="ghost"
-            class="size-8 rounded-md"
-            onClick={layout.sidebar.toggle}
-          />
-        </TooltipKeybind>
+        <Show when={!layout.fixedProject?.enabled}>
+          <TooltipKeybind
+            class="hidden xl:flex shrink-0 ml-14"
+            placement="bottom"
+            title="Toggle sidebar"
+            keybind={command.keybind("sidebar.toggle")}
+          >
+            <IconButton
+              icon={layout.sidebar.opened() ? "layout-left" : "layout-right"}
+              variant="ghost"
+              class="size-8 rounded-md"
+              onClick={layout.sidebar.toggle}
+            />
+          </TooltipKeybind>
+        </Show>
+
         <div id="opencode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" />
         <div class="flex-1 h-full" data-tauri-drag-region />
         <div id="opencode-titlebar-right" class="flex items-center gap-3 shrink-0" />
