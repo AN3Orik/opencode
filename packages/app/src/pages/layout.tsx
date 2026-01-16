@@ -1337,11 +1337,10 @@ export default function Layout(props: ParentProps) {
                     }
                   >
                     <IconButton icon="plus" variant="ghost" size="large" onClick={chooseProject} />
-
                   </Tooltip>
                 </Show>
-              </div>
 
+              </div>
               <DragOverlay>
                 <ProjectDragOverlay />
               </DragOverlay>
