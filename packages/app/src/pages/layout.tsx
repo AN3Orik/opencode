@@ -900,7 +900,7 @@ export default function Layout(props: ParentProps) {
     return (
       <div
         data-session-id={props.session.id}
-        class="group/session relative w-full rounded-md cursor-default transition-colors px-3
+        class="group/session relative w-full rounded-md cursor-default transition-colors pl-2 pr-3
                hover:bg-surface-raised-base-hover focus-within:bg-surface-raised-base-hover has-[.active]:bg-surface-base-active"
       >
         <Tooltip placement={props.mobile ? "bottom" : "right"} value={props.session.title} gutter={16} openDelay={1000}>
@@ -1151,7 +1151,7 @@ export default function Layout(props: ParentProps) {
         >
           <div class="px-2 py-1">
             <div class="group/trigger relative">
-              <Collapsible.Trigger class="flex items-center justify-between w-full pl-2 pr-16 py-1.5 rounded-md hover:bg-surface-raised-base-hover">
+              <Collapsible.Trigger class="flex items-center justify-between w-full pl-2 pr-2 py-1.5 rounded-md hover:bg-surface-raised-base-hover transition-all group-hover/trigger:pr-16 group-focus-within/trigger:pr-16">
                 <div class="flex items-center gap-1 min-w-0">
                   <div class="flex items-center justify-center shrink-0 size-6">
                     <Icon name="branch" size="small" />
@@ -1204,7 +1204,7 @@ export default function Layout(props: ParentProps) {
                 <div class="relative w-full py-1">
                   <Button
                     variant="ghost"
-                    class="flex w-full text-left justify-start text-14-regular text-text-weak px-10"
+                    class="flex w-full text-left justify-start text-14-regular text-text-weak pl-9 pr-10"
                     size="large"
                     onClick={(e: MouseEvent) => {
                       loadMore()
@@ -1256,7 +1256,7 @@ export default function Layout(props: ParentProps) {
             <div class="relative w-full py-1">
               <Button
                 variant="ghost"
-                class="flex w-full text-left justify-start text-14-regular text-text-weak px-10"
+                class="flex w-full text-left justify-start text-14-regular text-text-weak pl-9 pr-10"
                 size="large"
                 onClick={(e: MouseEvent) => {
                   loadMore()
@@ -1433,7 +1433,7 @@ export default function Layout(props: ParentProps) {
                           <Button
                             size="large"
                             icon="plus-small"
-                            class="w-full"
+                            class="w-full max-w-[256px]"
                             onClick={() => {
                               navigate(`/${base64Encode(p.worktree)}/session`)
                               layout.mobileSidebar.hide()
@@ -1450,7 +1450,7 @@ export default function Layout(props: ParentProps) {
                   >
                     <>
                       <div class="py-4 px-3">
-                        <Button size="large" icon="plus-small" class="w-full" onClick={createWorkspace}>
+                        <Button size="large" icon="plus-small" class="w-full max-w-[256px]" onClick={createWorkspace}>
                           New workspace
                         </Button>
                       </div>
@@ -1521,7 +1521,7 @@ export default function Layout(props: ParentProps) {
             "hidden xl:block": true,
             "relative shrink-0": true,
           }}
-          style={{ width: layout.sidebar.opened() ? `${layout.sidebar.width()}px` : "64px" }}
+          style={{ width: layout.sidebar.opened() ? `${Math.max(layout.sidebar.width(), 244)}px` : "64px" }}
         >
           <div class="@container w-full h-full contain-strict">
             <SidebarContent />
@@ -1530,9 +1530,9 @@ export default function Layout(props: ParentProps) {
             <ResizeHandle
               direction="horizontal"
               size={layout.sidebar.width()}
-              min={214}
+              min={244}
               max={window.innerWidth * 0.3 + 64}
-              collapseThreshold={144}
+              collapseThreshold={244}
               onResize={layout.sidebar.resize}
               onCollapse={layout.sidebar.close}
             />
