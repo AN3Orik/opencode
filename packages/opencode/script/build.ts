@@ -90,8 +90,14 @@ const targets = singleFlag
       return baselineFlag
     }
 
+    // also skip abi-specific builds for the same reason
+    if (item.abi !== undefined) {
+      return false
+    }
+
     return true
   })
+
   : allTargets
 
 await $`rm -rf dist`
