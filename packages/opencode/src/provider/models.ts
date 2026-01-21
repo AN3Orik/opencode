@@ -90,7 +90,8 @@ export namespace ModelsDev {
     } catch { }
 
     // Direct fetch fallback
-    const response = await fetch("https://models.dev/api.json").catch(() => null)
+    const url = Global.Path.modelsDevUrl
+    const response = await fetch(`${url}/api.json`).catch(() => null)
     if (response?.ok) {
       const json = await response.text()
       await Bun.write(file, json)
@@ -107,7 +108,8 @@ export namespace ModelsDev {
     log.info("refreshing", {
       file,
     })
-    const result = await fetch("https://models.dev/api.json", {
+    const url = Global.Path.modelsDevUrl
+    const result = await fetch(`${url}/api.json`, {
       headers: {
         "User-Agent": Installation.USER_AGENT,
       },
