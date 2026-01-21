@@ -50,7 +50,7 @@ export function AppBaseProviders(props: ParentProps) {
   return (
     <MetaProvider>
       <Font />
-<<<<<<< HEAD
+
       <ThemeProvider defaultTheme={themeParam ?? undefined}>
         <LanguageProvider>
           <UiI18nBridge>
