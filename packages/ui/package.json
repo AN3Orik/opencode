@@ -5,6 +5,7 @@
   "license": "MIT",
   "exports": {
     "./*": "./src/components/*.tsx",
+    "./i18n/*": "./src/i18n/*.ts",
     "./pierre": "./src/pierre/index.ts",
     "./pierre/*": "./src/pierre/*.ts",
     "./hooks": "./src/hooks/index.ts",
@@ -44,9 +45,10 @@
     "@opencode-ai/util": "workspace:*",
     "@pierre/diffs": "catalog:",
     "@shikijs/transformers": "3.9.2",
-    "@solid-primitives/bounds": "catalog:",
-    "@solid-primitives/media": "catalog:",
-    "@solid-primitives/resize-observer": "catalog:",
+    "@solid-primitives/bounds": "0.1.3",
+    "@solid-primitives/media": "2.3.3",
+    "@solid-primitives/resize-observer": "2.1.3",
+
     "@solidjs/meta": "catalog:",
     "@typescript/native-preview": "catalog:",
     "dompurify": "catalog:",
