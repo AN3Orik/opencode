@@ -1488,6 +1488,7 @@ export default function Layout(props: ParentProps) {
         class={`flex items-center justify-between gap-3 min-w-0 text-left w-full focus:outline-none transition-[padding] group-hover/session:pr-7 group-focus-within/session:pr-7 group-active/session:pr-7 ${props.dense ? "py-0.5" : "py-1"}`}
         onMouseEnter={() => prefetchSession(props.session, "high")}
         onFocus={() => prefetchSession(props.session, "high")}
+        onClick={() => setHoverSession(undefined)}
       >
         <div class="flex items-center gap-1 w-full">
           <div
@@ -1555,22 +1556,24 @@ export default function Layout(props: ParentProps) {
               when={hoverReady()}
               fallback={<div class="text-12-regular text-text-weak">{language.t("session.messages.loading")}</div>}
             >
-              <MessageNav
-                messages={hoverMessages() ?? []}
-                current={undefined}
-                getLabel={messageLabel}
-                onMessageSelect={(message) => {
-                  if (!isActive()) {
-                    sessionStorage.setItem("opencode.pendingMessage", `${props.session.id}|${message.id}`)
-                    navigate(`${props.slug}/session/${props.session.id}`)
-                    return
-                  }
-                  window.history.replaceState(null, "", `#message-${message.id}`)
-                  window.dispatchEvent(new HashChangeEvent("hashchange"))
-                }}
-                size="normal"
-                class="w-60"
-              />
+              <div class="overflow-y-auto max-h-72 h-full">
+                <MessageNav
+                  messages={hoverMessages() ?? []}
+                  current={undefined}
+                  getLabel={messageLabel}
+                  onMessageSelect={(message) => {
+                    if (!isActive()) {
+                      sessionStorage.setItem("opencode.pendingMessage", `${props.session.id}|${message.id}`)
+                      navigate(`${props.slug}/session/${props.session.id}`)
+                      return
+                    }
+                    window.history.replaceState(null, "", `#message-${message.id}`)
+                    window.dispatchEvent(new HashChangeEvent("hashchange"))
+                  }}
+                  size="normal"
+                  class="w-60"
+                />
+              </div>
             </Show>
           </HoverCard>
         </Show>

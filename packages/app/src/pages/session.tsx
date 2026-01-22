@@ -381,6 +381,22 @@ export default function Page() {
   let promptDock: HTMLDivElement | undefined
   let scroller: HTMLDivElement | undefined
 
+  const [scrollGesture, setScrollGesture] = createSignal(0)
+  const scrollGestureWindowMs = 250
+
+  const markScrollGesture = (target?: EventTarget | null) => {
+    const root = scroller
+    if (!root) return
+
+    const el = target instanceof Element ? target : undefined
+    const nested = el?.closest("[data-scrollable]")
+    if (nested && nested !== root) return
+
+    setScrollGesture(Date.now())
+  }
+
+  const hasScrollGesture = () => Date.now() - scrollGesture() < scrollGestureWindowMs
+
   createEffect(() => {
     if (!params.id) return
     sync.session.sync(params.id)
@@ -795,6 +811,12 @@ export default function Page() {
     // Don't autofocus chat if terminal panel is open
     if (view().terminal.opened()) return
 
+    // Only treat explicit scroll keys as potential "user scroll" gestures.
+    if (event.key === "PageUp" || event.key === "PageDown" || event.key === "Home" || event.key === "End") {
+      markScrollGesture()
+      return
+    }
+
     if (event.key.length === 1 && event.key !== "Unidentified" && !(event.ctrlKey || event.metaKey)) {
       inputRef?.focus()
     }
@@ -902,8 +924,6 @@ export default function Page() {
     sync.session.diff(id)
   })
 
-  const isWorking = createMemo(() => status().type !== "idle")
-
   const autoScroll = createAutoScroll({
     working: () => true,
     overflowAnchor: "dynamic",
@@ -921,18 +941,6 @@ export default function Page() {
       (scrolled) => {
         if (scrolled) return
         setStore("messageId", undefined)
-      },
-      { defer: true },
-    ),
-  )
-
-  createEffect(
-    on(
-      isWorking,
-      (working, prev) => {
-        if (!working || prev) return
-        if (autoScroll.userScrolled()) return
-        autoScroll.forceScrollToBottom()
       },
       { defer: true },
     ),
@@ -1385,11 +1393,19 @@ export default function Page() {
                       </div>
                       <div
                         ref={setScrollRef}
+                        onWheel={(e) => markScrollGesture(e.target)}
+                        onTouchMove={(e) => markScrollGesture(e.target)}
+                        onPointerDown={(e) => {
+                          if (e.target !== e.currentTarget) return
+                          markScrollGesture(e.target)
+                        }}
                         onScroll={(e) => {
+                          if (!hasScrollGesture()) return
+                          markScrollGesture(e.target)
                           autoScroll.handleScroll()
                           if (isDesktop() && autoScroll.userScrolled()) scheduleScrollSpy(e.currentTarget)
                         }}
-                        class="relative min-w-0 w-full h-full overflow-y-auto no-scrollbar"
+                        class="relative min-w-0 w-full h-full overflow-y-auto session-scroller"
                         style={{ "--session-title-height": info()?.title ? "40px" : "0px" }}
                       >
                         <Show when={info()?.title}>
