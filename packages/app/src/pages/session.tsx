@@ -509,7 +509,10 @@ export default function Page() {
       description: language.t("command.terminal.new.description"),
       category: language.t("command.category.terminal"),
       keybind: "ctrl+alt+t",
-      onSelect: () => terminal.new(),
+      onSelect: () => {
+        if (terminal.all().length > 0) terminal.new()
+        view().terminal.open()
+      },
     },
     {
       id: "steps.toggle",
@@ -779,7 +782,7 @@ export default function Page() {
     const activeElement = document.activeElement as HTMLElement | undefined
     if (activeElement) {
       const isProtected = activeElement.closest("[data-prevent-autofocus]")
-      const isInput = /^(INPUT|TEXTAREA|SELECT)$/.test(activeElement.tagName) || activeElement.isContentEditable
+      const isInput = /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(activeElement.tagName) || activeElement.isContentEditable
       if (isProtected || isInput) return
     }
     if (dialog.active) return
@@ -905,6 +908,11 @@ export default function Page() {
     working: () => true,
     overflowAnchor: "dynamic",
   })
+
+  const resumeScroll = () => {
+    setStore("messageId", undefined)
+    autoScroll.forceScrollToBottom()
+  }
 
   // When the user returns to the bottom, treat the active message as "latest".
   createEffect(
@@ -1231,11 +1239,15 @@ export default function Page() {
     language.locale()
 
     const label = (pty: LocalPTY) => {
+      const title = pty.title
       const number = pty.titleNumber
-      if (Number.isFinite(number) && number > 0) {
-        return language.t("terminal.title.numbered", { number })
-      }
-      if (pty.title) return pty.title
+      const match = title.match(/^Terminal (\d+)$/)
+      const parsed = match ? Number(match[1]) : undefined
+      const isDefaultTitle = Number.isFinite(number) && number > 0 && Number.isFinite(parsed) && parsed === number
+
+      if (title && !isDefaultTitle) return title
+      if (Number.isFinite(number) && number > 0) return language.t("terminal.title.numbered", { number })
+      if (title) return title
       return language.t("terminal.title")
     }
 
@@ -1353,23 +1365,24 @@ export default function Page() {
                     }
                   >
                     <div class="relative w-full h-full min-w-0">
-                      <Show when={autoScroll.userScrolled()}>
-                        <div class="absolute right-4 md:right-6 bottom-[calc(var(--prompt-height,8rem)+16px)] z-[60] pointer-events-none">
-                          <Button
-                            variant="secondary"
-                            size="small"
-                            icon="chevron-down"
-                            class="pointer-events-auto shadow-sm"
-                            onClick={() => {
-                              setStore("messageId", undefined)
-                              autoScroll.forceScrollToBottom()
-                              window.history.replaceState(null, "", window.location.href.replace(/#.*$/, ""))
-                            }}
-                          >
-                            {language.t("session.messages.jumpToLatest")}
-                          </Button>
-                        </div>
-                      </Show>
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2 bottom-[calc(var(--prompt-height,8rem)+32px)] z-[60] pointer-events-none transition-all duration-200 ease-out"
+                        classList={{
+                          "opacity-100 translate-y-0 scale-100": autoScroll.userScrolled(),
+                          "opacity-0 translate-y-2 scale-95 pointer-events-none": !autoScroll.userScrolled(),
+                        }}
+                      >
+                        <button
+                          class="pointer-events-auto size-8 flex items-center justify-center rounded-full bg-background-base border border-border-base shadow-sm text-text-base hover:bg-background-stronger transition-colors"
+                          onClick={() => {
+                            setStore("messageId", undefined)
+                            autoScroll.forceScrollToBottom()
+                            window.history.replaceState(null, "", window.location.href.replace(/#.*$/, ""))
+                          }}
+                        >
+                          <Icon name="arrow-down-to-line" />
+                        </button>
+                      </div>
                       <div
                         ref={setScrollRef}
                         onScroll={(e) => {
@@ -1396,6 +1409,7 @@ export default function Page() {
 
                         <div
                           ref={autoScroll.contentRef}
+                          role="log"
                           class="flex flex-col gap-32 items-start justify-start pb-[calc(var(--prompt-height,8rem)+64px)] md:pb-[calc(var(--prompt-height,10rem)+64px)] transition-[margin]"
                           classList={{
                             "w-full": true,
@@ -1526,6 +1540,7 @@ export default function Page() {
                   }}
                   newSessionWorktree={newSessionWorktree()}
                   onNewSessionWorktreeReset={() => setStore("newSessionWorktree", "main")}
+                  onSubmit={resumeScroll}
                 />
               </Show>
             </div>
@@ -1544,7 +1559,11 @@ export default function Page() {
 
         {/* Desktop tabs panel (Review + Context + Files) - hidden on mobile */}
         <Show when={isDesktop() && showTabs()}>
-          <div class="relative flex-1 min-w-0 h-full border-l border-border-weak-base">
+          <aside
+            id="review-panel"
+            aria-label={language.t("session.panel.reviewAndFiles")}
+            class="relative flex-1 min-w-0 h-full border-l border-border-weak-base"
+          >
             <DragDropProvider
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
@@ -1578,7 +1597,12 @@ export default function Page() {
                         value="context"
                         closeButton={
                           <Tooltip value={language.t("common.closeTab")} placement="bottom">
-                            <IconButton icon="close" variant="ghost" onClick={() => tabs().close("context")} />
+                            <IconButton
+                              icon="close"
+                              variant="ghost"
+                              onClick={() => tabs().close("context")}
+                              aria-label={language.t("common.closeTab")}
+                            />
                           </Tooltip>
                         }
                         hideCloseButton
@@ -1604,6 +1628,7 @@ export default function Page() {
                           variant="ghost"
                           iconSize="large"
                           onClick={() => dialog.show(() => <DialogSelectFile />)}
+                          aria-label={language.t("command.file.open")}
                         />
                       </TooltipKeybind>
                     </div>
@@ -1905,12 +1930,15 @@ export default function Page() {
                 </Show>
               </DragOverlay>
             </DragDropProvider>
-          </div>
+          </aside>
         </Show>
       </div>
 
       <Show when={isDesktop() && view().terminal.opened()}>
         <div
+          id="terminal-panel"
+          role="region"
+          aria-label={language.t("terminal.title")}
           class="relative w-full flex flex-col shrink-0 border-t border-border-weak-base"
           style={{ height: `${layout.terminal.height()}px` }}
         >
@@ -1982,7 +2010,13 @@ export default function Page() {
                         keybind={command.keybind("terminal.new")}
                         class="flex items-center"
                       >
-                        <IconButton icon="plus-small" variant="ghost" iconSize="large" onClick={terminal.new} />
+                        <IconButton
+                          icon="plus-small"
+                          variant="ghost"
+                          iconSize="large"
+                          onClick={terminal.new}
+                          aria-label={language.t("command.terminal.new")}
+                        />
                       </TooltipKeybind>
                     </div>
                   </Tabs.List>
@@ -2002,7 +2036,12 @@ export default function Page() {
                           <Terminal
                             pty={pty}
                             onCleanup={(data) => terminal.update({ ...data, id: pty.id })}
+                            onConnect={() => {
+                              terminal.update({ id: pty.id, error: false })
+                              setDismissed(false)
+                            }}
                             onConnectError={() => {
+                              setDismissed(false)
                               terminal.update({ id: pty.id, error: true })
                             }}
                           />
@@ -2056,11 +2095,17 @@ export default function Page() {
                         {(t) => (
                           <div class="relative p-1 h-10 flex items-center bg-background-stronger text-14-regular">
                             {(() => {
+                              const title = t().title
                               const number = t().titleNumber
-                              if (Number.isFinite(number) && number > 0) {
+                              const match = title.match(/^Terminal (\d+)$/)
+                              const parsed = match ? Number(match[1]) : undefined
+                              const isDefaultTitle =
+                                Number.isFinite(number) && number > 0 && Number.isFinite(parsed) && parsed === number
+
+                              if (title && !isDefaultTitle) return title
+                              if (Number.isFinite(number) && number > 0)
                                 return language.t("terminal.title.numbered", { number })
-                              }
-                              if (t().title) return t().title
+                              if (title) return title
                               return language.t("terminal.title")
                             })()}
                           </div>

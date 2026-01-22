@@ -111,10 +111,11 @@ export function Titlebar() {
         </Show>
         <Show when={!layout.fixedProject?.enabled}>
           <TooltipKeybind
-            class={web() ? "hidden xl:flex shrink-0 ml-14" : "hidden xl:flex shrink-0"}
+            class={web() ? "hidden xl:flex shrink-0 ml-14" : "hidden xl:flex shrink-0 ml-2"}
             placement="bottom"
             title={language.t("command.sidebar.toggle")}
             keybind={command.keybind("sidebar.toggle")}
+
           >
             <Button
               variant="ghost"

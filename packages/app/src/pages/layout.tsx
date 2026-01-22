@@ -138,6 +138,8 @@ export default function Layout(props: ParentProps) {
   const isBusy = (directory: string) => busyWorkspaces().has(workspaceKey(directory))
   const editorRef = { current: undefined as HTMLInputElement | undefined }
 
+  const [hoverSession, setHoverSession] = createSignal<string | undefined>()
+
   const autoselecting = createMemo(() => {
     if (params.dir) return false
     if (initialDir) return false
@@ -977,7 +979,7 @@ export default function Layout(props: ParentProps) {
     const current = displayName(project)
     if (next === current) return
     const name = next === getFilename(project.worktree) ? "" : next
-    await globalSDK.client.project.update({ projectID: project.id, name })
+    await globalSDK.client.project.update({ projectID: project.id, directory: project.worktree, name })
   }
 
   async function renameSession(session: Session, next: string) {
@@ -1540,7 +1542,15 @@ export default function Layout(props: ParentProps) {
             </Tooltip>
           }
         >
-          <HoverCard openDelay={1000} closeDelay={0} placement="right-start" gutter={28} trigger={item}>
+          <HoverCard
+            openDelay={1000}
+            closeDelay={0}
+            placement="right"
+            gutter={28}
+            trigger={item}
+            open={hoverSession() === props.session.id}
+            onOpenChange={(open) => setHoverSession(open ? props.session.id : undefined)}
+          >
             <Show
               when={hoverReady()}
               fallback={<div class="text-12-regular text-text-weak">{language.t("session.messages.loading")}</div>}
@@ -1906,6 +1916,7 @@ export default function Layout(props: ParentProps) {
           "bg-surface-base-hover border border-border-weak-base": !selected() && open(),
         }}
         onClick={() => navigateToProject(props.project.worktree)}
+        onBlur={() => setOpen(false)}
       >
         <ProjectIcon project={props.project} notify />
       </button>
@@ -1921,7 +1932,10 @@ export default function Layout(props: ParentProps) {
           placement="right-start"
           gutter={6}
           trigger={trigger}
-          onOpenChange={setOpen}
+          onOpenChange={(value) => {
+            setOpen(value)
+            if (value) setHoverSession(undefined)
+          }}
         >
           <div class="-m-3 p-2 flex flex-col w-72">
             <div class="px-4 pt-2 pb-1 text-14-medium text-text-strong truncate">{displayName(props.project)}</div>
@@ -2190,7 +2204,7 @@ export default function Layout(props: ParentProps) {
                         />
 
                         <Tooltip
-                          placement={sidebarProps.mobile ? "bottom" : "top"}
+                          placement="bottom"
                           gutter={2}
                           value={project()?.worktree}
                           class="shrink-0"
@@ -2339,7 +2353,8 @@ export default function Layout(props: ParentProps) {
     <div class="relative bg-background-base flex-1 min-h-0 flex flex-col select-none [&_input]:select-text [&_textarea]:select-text [&_[contenteditable]]:select-text">
       <Titlebar />
       <div class="flex-1 min-h-0 flex">
-        <div
+        <nav
+          aria-label={language.t("sidebar.nav.projectsAndSessions")}
           classList={{
             "hidden xl:block": true,
             "relative shrink-0": true,
@@ -2360,7 +2375,7 @@ export default function Layout(props: ParentProps) {
               onCollapse={layout.sidebar.close}
             />
           </Show>
-        </div>
+        </nav>
         <div class="xl:hidden">
           <div
             classList={{
@@ -2372,7 +2387,8 @@ export default function Layout(props: ParentProps) {
               if (e.target === e.currentTarget) layout.mobileSidebar.hide()
             }}
           />
-          <div
+          <nav
+            aria-label={language.t("sidebar.nav.projectsAndSessions")}
             classList={{
               "@container fixed top-10 bottom-0 left-0 z-50 w-72 bg-background-base transition-transform duration-200 ease-out": true,
               "translate-x-0": layout.mobileSidebar.opened(),
@@ -2381,7 +2397,7 @@ export default function Layout(props: ParentProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <SidebarContent mobile />
-          </div>
+          </nav>
         </div>
 
         <main
