@@ -90,6 +90,8 @@ export const dict = {
   "dialog.provider.group.other": "其他",
   "dialog.provider.tag.recommended": "推荐",
   "dialog.provider.anthropic.note": "使用 Claude Pro/Max 或 API 密钥连接",
+  "dialog.provider.openai.note": "使用 ChatGPT Pro/Plus 或 API 密钥连接",
+  "dialog.provider.copilot.note": "使用 Copilot 或 API 密钥连接",
 
   "dialog.model.select.title": "选择模型",
   "dialog.model.search.placeholder": "搜索模型",
@@ -285,6 +287,8 @@ export const dict = {
   "language.ru": "俄语",
   "language.pl": "波兰语",
   "language.ar": "阿拉伯语",
+  "language.no": "挪威语",
+  "language.br": "葡萄牙语（巴西）",
 
   "toast.language.title": "语言",
   "toast.language.description": "已切换到{{language}}",
@@ -419,6 +423,7 @@ export const dict = {
   "common.learnMore": "了解更多",
   "common.rename": "重命名",
   "common.reset": "重置",
+  "common.archive": "归档",
   "common.delete": "删除",
   "common.close": "关闭",
   "common.edit": "编辑",
@@ -536,6 +541,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "访问项目目录之外的文件",
   "settings.permissions.tool.doom_loop.title": "Doom Loop",
   "settings.permissions.tool.doom_loop.description": "检测具有相同输入的重复工具调用",
+
+  "session.delete.failed.title": "删除会话失败",
+  "session.delete.title": "删除会话",
+  "session.delete.confirm": '删除会话 "{{name}}"?',
+  "session.delete.button": "删除会话",
 
   "workspace.new": "新建工作区",
   "workspace.type.local": "本地",

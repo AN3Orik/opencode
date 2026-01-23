@@ -86,6 +86,8 @@ export const dict = {
   "dialog.provider.group.other": "Autre",
   "dialog.provider.tag.recommended": "Recommandé",
   "dialog.provider.anthropic.note": "Connectez-vous avec Claude Pro/Max ou une clé API",
+  "dialog.provider.openai.note": "Connectez-vous avec ChatGPT Pro/Plus ou une clé API",
+  "dialog.provider.copilot.note": "Connectez-vous avec Copilot ou une clé API",
 
   "dialog.model.select.title": "Sélectionner un modèle",
   "dialog.model.search.placeholder": "Rechercher des modèles",
@@ -287,6 +289,8 @@ export const dict = {
   "language.ru": "Russe",
   "language.pl": "Polonais",
   "language.ar": "Arabe",
+  "language.no": "Norvégien",
+  "language.br": "Portugais (Brésil)",
 
   "toast.language.title": "Langue",
   "toast.language.description": "Passé à {{language}}",
@@ -431,6 +435,7 @@ export const dict = {
   "common.learnMore": "En savoir plus",
   "common.rename": "Renommer",
   "common.reset": "Réinitialiser",
+  "common.archive": "Archiver",
   "common.delete": "Supprimer",
   "common.close": "Fermer",
   "common.edit": "Modifier",
@@ -554,6 +559,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "Accéder aux fichiers en dehors du répertoire du projet",
   "settings.permissions.tool.doom_loop.title": "Boucle infernale",
   "settings.permissions.tool.doom_loop.description": "Détecter les appels d'outils répétés avec une entrée identique",
+
+  "session.delete.failed.title": "Échec de la suppression de la session",
+  "session.delete.title": "Supprimer la session",
+  "session.delete.confirm": 'Supprimer la session "{{name}}" ?',
+  "session.delete.button": "Supprimer la session",
 
   "workspace.new": "Nouvel espace de travail",
   "workspace.type.local": "local",

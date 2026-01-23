@@ -86,6 +86,8 @@ export const dict = {
   "dialog.provider.group.other": "その他",
   "dialog.provider.tag.recommended": "推奨",
   "dialog.provider.anthropic.note": "Claude Pro/MaxまたはAPIキーで接続",
+  "dialog.provider.openai.note": "ChatGPT Pro/PlusまたはAPIキーで接続",
+  "dialog.provider.copilot.note": "CopilotまたはAPIキーで接続",
 
   "dialog.model.select.title": "モデルを選択",
   "dialog.model.search.placeholder": "モデルを検索",
@@ -285,6 +287,8 @@ export const dict = {
   "language.ru": "ロシア語",
   "language.pl": "ポーランド語",
   "language.ar": "アラビア語",
+  "language.no": "ノルウェー語",
+  "language.br": "ポルトガル語（ブラジル）",
 
   "toast.language.title": "言語",
   "toast.language.description": "{{language}}に切り替えました",
@@ -423,6 +427,7 @@ export const dict = {
   "common.learnMore": "詳細",
   "common.rename": "名前変更",
   "common.reset": "リセット",
+  "common.archive": "アーカイブ",
   "common.delete": "削除",
   "common.close": "閉じる",
   "common.edit": "編集",
@@ -541,6 +546,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "プロジェクトディレクトリ外のファイルへのアクセス",
   "settings.permissions.tool.doom_loop.title": "Doom Loop",
   "settings.permissions.tool.doom_loop.description": "同一入力による繰り返しのツール呼び出しを検出",
+
+  "session.delete.failed.title": "セッションの削除に失敗しました",
+  "session.delete.title": "セッションの削除",
+  "session.delete.confirm": 'セッション "{{name}}" を削除しますか？',
+  "session.delete.button": "セッションを削除",
 
   "workspace.new": "新しいワークスペース",
   "workspace.type.local": "ローカル",

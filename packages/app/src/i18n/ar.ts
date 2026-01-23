@@ -88,6 +88,8 @@ export const dict = {
   "dialog.provider.group.other": "آخر",
   "dialog.provider.tag.recommended": "موصى به",
   "dialog.provider.anthropic.note": "اتصل باستخدام Claude Pro/Max أو مفتاح API",
+  "dialog.provider.openai.note": "اتصل باستخدام ChatGPT Pro/Plus أو مفتاح API",
+  "dialog.provider.copilot.note": "اتصل باستخدام Copilot أو مفتاح API",
 
   "dialog.model.select.title": "تحديد نموذج",
   "dialog.model.search.placeholder": "البحث عن نماذج",
@@ -304,6 +306,8 @@ export const dict = {
   "language.ru": "الروسية",
   "language.pl": "البولندية",
   "language.ar": "العربية",
+  "language.no": "النرويجية",
+  "language.br": "البرتغالية (البرازيل)",
 
   "toast.language.title": "لغة",
   "toast.language.description": "تم التبديل إلى {{language}}",
@@ -442,6 +446,7 @@ export const dict = {
   "common.learnMore": "اعرف المزيد",
   "common.rename": "إعادة تسمية",
   "common.reset": "إعادة تعيين",
+  "common.archive": "أرشفة",
   "common.delete": "حذف",
   "common.close": "إغلاق",
   "common.edit": "تحرير",
@@ -618,6 +623,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "الوصول إلى الملفات خارج دليل المشروع",
   "settings.permissions.tool.doom_loop.title": "حلقة الموت",
   "settings.permissions.tool.doom_loop.description": "اكتشاف استدعاءات الأدوات المتكررة بمدخلات متطابقة",
+
+  "session.delete.failed.title": "فشل حذف الجلسة",
+  "session.delete.title": "حذف الجلسة",
+  "session.delete.confirm": 'حذف الجلسة "{{name}}"؟',
+  "session.delete.button": "حذف الجلسة",
 
   "workspace.new": "مساحة عمل جديدة",
   "workspace.type.local": "محلي",

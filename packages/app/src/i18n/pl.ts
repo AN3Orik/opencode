@@ -88,6 +88,8 @@ export const dict = {
   "dialog.provider.group.other": "Inne",
   "dialog.provider.tag.recommended": "Zalecane",
   "dialog.provider.anthropic.note": "Połącz z Claude Pro/Max lub kluczem API",
+  "dialog.provider.openai.note": "Połącz z ChatGPT Pro/Plus lub kluczem API",
+  "dialog.provider.copilot.note": "Połącz z Copilot lub kluczem API",
 
   "dialog.model.select.title": "Wybierz model",
   "dialog.model.search.placeholder": "Szukaj modeli",
@@ -303,6 +305,8 @@ export const dict = {
   "language.pl": "Polski",
   "language.ru": "Rosyjski",
   "language.ar": "Arabski",
+  "language.no": "Norweski",
+  "language.br": "Portugalski (Brazylia)",
 
   "toast.language.title": "Język",
   "toast.language.description": "Przełączono na {{language}}",
@@ -446,6 +450,7 @@ export const dict = {
   "common.learnMore": "Dowiedz się więcej",
   "common.rename": "Zmień nazwę",
   "common.reset": "Resetuj",
+  "common.archive": "Archiwizuj",
   "common.delete": "Usuń",
   "common.close": "Zamknij",
   "common.edit": "Edytuj",
@@ -623,6 +628,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "Dostęp do plików poza katalogiem projektu",
   "settings.permissions.tool.doom_loop.title": "Zapętlenie",
   "settings.permissions.tool.doom_loop.description": "Wykrywanie powtarzających się wywołań narzędzi (doom loop)",
+
+  "session.delete.failed.title": "Nie udało się usunąć sesji",
+  "session.delete.title": "Usuń sesję",
+  "session.delete.confirm": 'Usunąć sesję "{{name}}"?',
+  "session.delete.button": "Usuń sesję",
 
   "workspace.new": "Nowa przestrzeń robocza",
   "workspace.type.local": "lokalna",

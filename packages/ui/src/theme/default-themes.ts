@@ -14,6 +14,7 @@ import vesperThemeJson from "./themes/vesper.json"
 import ueThemeJson from "./themes/ue.json"
 import carbonfoxThemeJson from "./themes/carbonfox.json"
 import gruvboxThemeJson from "./themes/gruvbox.json"
+import auraThemeJson from "./themes/aura.json"
 
 
 export const oc1Theme = oc1ThemeJson as DesktopTheme
@@ -31,6 +32,7 @@ export const vesperTheme = vesperThemeJson as DesktopTheme
 export const ueTheme = ueThemeJson as DesktopTheme
 export const carbonfoxTheme = carbonfoxThemeJson as DesktopTheme
 export const gruvboxTheme = gruvboxThemeJson as DesktopTheme
+export const auraTheme = auraThemeJson as DesktopTheme
 
 
 export const DEFAULT_THEMES: Record<string, DesktopTheme> = {
@@ -49,5 +51,6 @@ export const DEFAULT_THEMES: Record<string, DesktopTheme> = {
   ue: ueTheme,
   carbonfox: carbonfoxTheme,
   gruvbox: gruvboxTheme,
+  aura: auraTheme,
 
 }

@@ -88,6 +88,8 @@ export const dict = {
   "dialog.provider.group.other": "Другие",
   "dialog.provider.tag.recommended": "Рекомендуемые",
   "dialog.provider.anthropic.note": "Подключитесь с помощью Claude Pro/Max или API ключа",
+  "dialog.provider.openai.note": "Подключитесь с помощью ChatGPT Pro/Plus или API ключа",
+  "dialog.provider.copilot.note": "Подключитесь с помощью Copilot или API ключа",
 
   "dialog.model.select.title": "Выбрать модель",
   "dialog.model.search.placeholder": "Поиск моделей",
@@ -303,6 +305,8 @@ export const dict = {
   "language.da": "Датский",
   "language.ru": "Русский",
   "language.ar": "Арабский",
+  "language.no": "Норвежский",
+  "language.br": "Португальский (Бразилия)",
 
   "toast.language.title": "Язык",
   "toast.language.description": "Переключено на {{language}}",
@@ -447,6 +451,7 @@ export const dict = {
   "common.learnMore": "Подробнее",
   "common.rename": "Переименовать",
   "common.reset": "Сбросить",
+  "common.archive": "Архивировать",
   "common.delete": "Удалить",
   "common.close": "Закрыть",
   "common.edit": "Редактировать",
@@ -626,6 +631,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "Доступ к файлам вне директории проекта",
   "settings.permissions.tool.doom_loop.title": "Doom Loop",
   "settings.permissions.tool.doom_loop.description": "Обнаружение повторных вызовов инструментов с одинаковым вводом",
+
+  "session.delete.failed.title": "Не удалось удалить сессию",
+  "session.delete.title": "Удалить сессию",
+  "session.delete.confirm": 'Удалить сессию "{{name}}"?',
+  "session.delete.button": "Удалить сессию",
 
   "workspace.new": "Новое рабочее пространство",
   "workspace.type.local": "локальное",

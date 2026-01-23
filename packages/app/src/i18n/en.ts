@@ -88,6 +88,8 @@ export const dict = {
   "dialog.provider.group.other": "Other",
   "dialog.provider.tag.recommended": "Recommended",
   "dialog.provider.anthropic.note": "Connect with Claude Pro/Max or API key",
+  "dialog.provider.openai.note": "Connect with ChatGPT Pro/Plus or API key",
+  "dialog.provider.copilot.note": "Connect with Copilot or API key",
 
   "dialog.model.select.title": "Select model",
   "dialog.model.search.placeholder": "Search models",
@@ -257,6 +259,9 @@ export const dict = {
   "dialog.project.edit.icon.recommended": "Recommended: 128x128px",
   "dialog.project.edit.color": "Color",
   "dialog.project.edit.color.select": "Select {{color}} color",
+  "dialog.project.edit.worktree.startup": "Workspace startup script",
+  "dialog.project.edit.worktree.startup.description": "Runs after creating a new workspace (worktree).",
+  "dialog.project.edit.worktree.startup.placeholder": "e.g. bun install",
 
   "context.breakdown.title": "Context Breakdown",
   "context.breakdown.note": 'Approximate breakdown of input tokens. "Other" includes tool definitions and overhead.',
@@ -304,6 +309,8 @@ export const dict = {
   "language.ru": "Russian",
   "language.pl": "Polish",
   "language.ar": "Arabic",
+  "language.no": "Norwegian",
+  "language.br": "Portuguese (Brazil)",
 
   "toast.language.title": "Language",
   "toast.language.description": "Switched to {{language}}",
@@ -446,6 +453,7 @@ export const dict = {
   "common.learnMore": "Learn more",
   "common.rename": "Rename",
   "common.reset": "Reset",
+  "common.archive": "Archive",
   "common.delete": "Delete",
   "common.close": "Close",
   "common.edit": "Edit",
@@ -622,6 +630,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "Access files outside the project directory",
   "settings.permissions.tool.doom_loop.title": "Doom Loop",
   "settings.permissions.tool.doom_loop.description": "Detect repeated tool calls with identical input",
+
+  "session.delete.failed.title": "Failed to delete session",
+  "session.delete.title": "Delete session",
+  "session.delete.confirm": 'Delete session "{{name}}"?',
+  "session.delete.button": "Delete session",
 
   "workspace.new": "New workspace",
   "workspace.type.local": "local",

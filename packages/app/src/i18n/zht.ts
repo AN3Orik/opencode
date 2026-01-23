@@ -90,6 +90,8 @@ export const dict = {
   "dialog.provider.group.other": "其他",
   "dialog.provider.tag.recommended": "推薦",
   "dialog.provider.anthropic.note": "使用 Claude Pro/Max 或 API 金鑰連線",
+  "dialog.provider.openai.note": "使用 ChatGPT Pro/Plus 或 API 金鑰連線",
+  "dialog.provider.copilot.note": "使用 Copilot 或 API 金鑰連線",
 
   "dialog.model.select.title": "選擇模型",
   "dialog.model.search.placeholder": "搜尋模型",
@@ -281,6 +283,8 @@ export const dict = {
   "language.ko": "韓語",
   "language.ru": "俄語",
   "language.ar": "阿拉伯語",
+  "language.no": "挪威語",
+  "language.br": "葡萄牙語（巴西）",
 
   "toast.language.title": "語言",
   "toast.language.description": "已切換到 {{language}}",
@@ -415,6 +419,7 @@ export const dict = {
   "common.learnMore": "深入了解",
   "common.rename": "重新命名",
   "common.reset": "重設",
+  "common.archive": "封存",
   "common.delete": "刪除",
   "common.close": "關閉",
   "common.edit": "編輯",
@@ -532,6 +537,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "存取專案目錄之外的檔案",
   "settings.permissions.tool.doom_loop.title": "Doom Loop",
   "settings.permissions.tool.doom_loop.description": "偵測具有相同輸入的重複工具呼叫",
+
+  "session.delete.failed.title": "刪除工作階段失敗",
+  "session.delete.title": "刪除工作階段",
+  "session.delete.confirm": '刪除工作階段 "{{name}}"?',
+  "session.delete.button": "刪除工作階段",
 
   "workspace.new": "新增工作區",
   "workspace.type.local": "本地",

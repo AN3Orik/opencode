@@ -90,6 +90,8 @@ export const dict = {
   "dialog.provider.group.other": "기타",
   "dialog.provider.tag.recommended": "추천",
   "dialog.provider.anthropic.note": "Claude Pro/Max 또는 API 키로 연결",
+  "dialog.provider.openai.note": "ChatGPT Pro/Plus 또는 API 키로 연결",
+  "dialog.provider.copilot.note": "Copilot 또는 API 키로 연결",
 
   "dialog.model.select.title": "모델 선택",
   "dialog.model.search.placeholder": "모델 검색",
@@ -289,6 +291,8 @@ export const dict = {
   "language.ru": "러시아어",
   "language.pl": "폴란드어",
   "language.ar": "아랍어",
+  "language.no": "노르웨이어",
+  "language.br": "포르투갈어 (브라질)",
 
   "toast.language.title": "언어",
   "toast.language.description": "{{language}}(으)로 전환됨",
@@ -425,6 +429,7 @@ export const dict = {
   "common.learnMore": "더 알아보기",
   "common.rename": "이름 바꾸기",
   "common.reset": "초기화",
+  "common.archive": "보관",
   "common.delete": "삭제",
   "common.close": "닫기",
   "common.edit": "편집",
@@ -542,6 +547,11 @@ export const dict = {
   "settings.permissions.tool.external_directory.description": "프로젝트 디렉터리 외부의 파일에 액세스",
   "settings.permissions.tool.doom_loop.title": "무한 반복",
   "settings.permissions.tool.doom_loop.description": "동일한 입력으로 반복되는 도구 호출 감지",
+
+  "session.delete.failed.title": "세션 삭제 실패",
+  "session.delete.title": "세션 삭제",
+  "session.delete.confirm": '"{{name}}" 세션을 삭제하시겠습니까?',
+  "session.delete.button": "세션 삭제",
 
   "workspace.new": "새 작업 공간",
   "workspace.type.local": "로컬",
