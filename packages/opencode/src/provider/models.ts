@@ -94,13 +94,7 @@ export namespace ModelsDev {
     if (SNAPSHOT) return SNAPSHOT as Record<string, Provider>
     if (Flag.OPENCODE_DISABLE_MODELS_FETCH) return {} as Record<string, Provider>
 
-    // Fallback: fetch directly if macro/cache unavailable
-    try {
-      if (typeof data === 'function') {
-        const json = await data()
-        return JSON.parse(json) as Record<string, Provider>
-      }
-    } catch { }
+
 
     // Direct fetch fallback
     const endpoint = url()
