@@ -23,11 +23,7 @@
     },
     "packages/app": {
       "name": "@opencode-ai/app",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@kobalte/core": "catalog:",
         "@opencode-ai/sdk": "workspace:*",
@@ -42,7 +38,7 @@
         "@solid-primitives/resize-observer": "2.1.3",
         "@solid-primitives/scroll": "2.1.3",
         "@solid-primitives/storage": "catalog:",
-        "@solid-primitives/websocket": "catalog:",
+        "@solid-primitives/websocket": "1.3.1",
         "@solidjs/meta": "catalog:",
         "@solidjs/router": "catalog:",
         "@thisbeyond/solid-dnd": "0.7.5",
@@ -77,11 +73,7 @@
     },
     "packages/console/app": {
       "name": "@opencode-ai/console-app",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@cloudflare/vite-plugin": "1.15.2",
         "@ibm/plex": "6.4.1",
@@ -115,11 +107,7 @@
     },
     "packages/console/core": {
       "name": "@opencode-ai/console-core",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@aws-sdk/client-sts": "3.782.0",
         "@jsx-email/render": "1.1.1",
@@ -146,11 +134,7 @@
     },
     "packages/console/function": {
       "name": "@opencode-ai/console-function",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@ai-sdk/anthropic": "2.0.0",
         "@ai-sdk/openai": "2.0.2",
@@ -174,11 +158,7 @@
     },
     "packages/console/mail": {
       "name": "@opencode-ai/console-mail",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@jsx-email/all": "2.2.3",
         "@jsx-email/cli": "1.4.3",
@@ -202,11 +182,7 @@
     },
     "packages/desktop": {
       "name": "@opencode-ai/desktop",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@opencode-ai/app": "workspace:*",
         "@opencode-ai/ui": "workspace:*",
@@ -237,11 +213,7 @@
     },
     "packages/enterprise": {
       "name": "@opencode-ai/enterprise",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@opencode-ai/ui": "workspace:*",
         "@opencode-ai/util": "workspace:*",
@@ -270,11 +242,7 @@
     },
     "packages/function": {
       "name": "@opencode-ai/function",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@octokit/auth-app": "8.0.1",
         "@octokit/rest": "catalog:",
@@ -290,11 +258,7 @@
     },
     "packages/opencode": {
       "name": "opencode",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "bin": {
         "opencode": "./bin/opencode",
       },
@@ -398,11 +362,7 @@
     },
     "packages/plugin": {
       "name": "@opencode-ai/plugin",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@opencode-ai/sdk": "workspace:*",
         "zod": "catalog:",
@@ -422,11 +382,7 @@
     },
     "packages/sdk/js": {
       "name": "@opencode-ai/sdk",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "devDependencies": {
         "@hey-api/openapi-ts": "0.90.10",
         "@tsconfig/node22": "catalog:",
@@ -437,11 +393,7 @@
     },
     "packages/slack": {
       "name": "@opencode-ai/slack",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@opencode-ai/sdk": "workspace:*",
         "@slack/bolt": "^3.17.1",
@@ -454,11 +406,7 @@
     },
     "packages/ui": {
       "name": "@opencode-ai/ui",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@kobalte/core": "catalog:",
         "@opencode-ai/sdk": "workspace:*",
@@ -470,7 +418,7 @@
         "@solid-primitives/resize-observer": "2.1.3",
         "@solidjs/meta": "catalog:",
         "@typescript/native-preview": "catalog:",
-        "dompurify": "catalog:",
+        "dompurify": "3.3.1",
         "fuzzysort": "catalog:",
         "katex": "0.16.27",
         "luxon": "catalog:",
@@ -491,7 +439,6 @@
         "@types/bun": "catalog:",
         "@types/katex": "0.16.7",
         "@types/luxon": "catalog:",
-        "@types/morphdom": "catalog:",
         "tailwindcss": "catalog:",
         "typescript": "catalog:",
         "vite": "catalog:",
@@ -501,11 +448,7 @@
     },
     "packages/util": {
       "name": "@opencode-ai/util",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "zod": "catalog:",
       },
@@ -516,11 +459,7 @@
     },
     "packages/web": {
       "name": "@opencode-ai/web",
-<<<<<<< HEAD
-      "version": "1.1.45",
-=======
-      "version": "1.1.47",
->>>>>>> upstream/dev
+      "version": "1.1.48",
       "dependencies": {
         "@astrojs/cloudflare": "12.6.3",
         "@astrojs/markdown-remark": "6.3.1",
@@ -570,24 +509,15 @@
     "@openauthjs/openauth": "0.0.0-20250322224806",
     "@pierre/diffs": "1.0.2",
     "@playwright/test": "1.51.0",
-    "@solid-primitives/active-element": "2.1.3",
-    "@solid-primitives/audio": "1.4.2",
-    "@solid-primitives/bounds": "0.1.3",
-    "@solid-primitives/event-bus": "1.1.2",
-    "@solid-primitives/media": "2.3.3",
-    "@solid-primitives/resize-observer": "2.1.3",
-    "@solid-primitives/scroll": "2.1.3",
     "@solid-primitives/storage": "4.3.3",
-    "@solid-primitives/websocket": "1.3.1",
     "@solidjs/meta": "0.29.4",
     "@solidjs/router": "0.15.4",
     "@solidjs/start": "https://pkg.pr.new/@solidjs/start@dfb2020",
     "@tailwindcss/vite": "4.1.11",
     "@tsconfig/bun": "1.0.9",
     "@tsconfig/node22": "22.0.2",
-    "@types/bun": "1.3.6",
+    "@types/bun": "1.3.5",
     "@types/luxon": "3.7.1",
-    "@types/morphdom": "2.4.2",
     "@types/node": "22.13.9",
     "@types/semver": "7.7.1",
     "@typescript/native-preview": "7.0.0-dev.20251207.1",
@@ -1867,7 +1797,7 @@
 
     "@types/braces": ["@types/braces@3.0.5", "", {}, "sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w=="],
 
-    "@types/bun": ["@types/bun@1.3.6", "", { "dependencies": { "bun-types": "1.3.6" } }, "sha512-uWCv6FO/8LcpREhenN1d1b6fcspAB+cefwD7uti8C8VffIv0Um08TKMn98FynpTiU38+y2dUO55T11NgDt8VAA=="],
+    "@types/bun": ["@types/bun@1.3.5", "", { "dependencies": { "bun-types": "1.3.5" } }, "sha512-RnygCqNrd3srIPEWBd5LFeUYG7plCoH2Yw9WaZGyNmdTEei+gWaHqydbaIRkIkcbXwhBT94q78QljxN0Sk838w=="],
 
     "@types/chai": ["@types/chai@5.2.3", "", { "dependencies": { "@types/deep-eql": "*", "assertion-error": "^2.0.1" } }, "sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA=="],
 
@@ -1910,8 +1840,6 @@
     "@types/micromatch": ["@types/micromatch@4.0.10", "", { "dependencies": { "@types/braces": "*" } }, "sha512-5jOhFDElqr4DKTrTEbnW8DZ4Hz5LRUEmyrGpCMrD/NphYv3nUnaF08xmSLx1rGGnyEs/kFnhiw6dCgcDqMr5PQ=="],
 
     "@types/mime": ["@types/mime@1.3.5", "", {}, "sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w=="],
-
-    "@types/morphdom": ["@types/morphdom@2.4.2", "", { "dependencies": { "morphdom": "*" } }, "sha512-tKZZkqBzRJ1ucthVqr41rW2yvTO5ItYTp5I1vc30t06OsRmZTP+TprYa5S6VHdQEuMbnAxR5WXtFmOZ2FIhc/g=="],
 
     "@types/ms": ["@types/ms@2.1.0", "", {}, "sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA=="],
 
@@ -2171,7 +2099,7 @@
 
     "bun-pty": ["bun-pty@0.4.4", "", {}, "sha512-WK4G6uWsZgu1v4hKIlw6G1q2AOf8Rbga2Yr7RnxArVjjyb+mtVa/CFc9GOJf+OYSJSH8k7LonAtQOVeNAddRyg=="],
 
-    "bun-types": ["bun-types@1.3.6", "", { "dependencies": { "@types/node": "*" } }, "sha512-OlFwHcnNV99r//9v5IIOgQ9Uk37gZqrNMCcqEaExdkVq3Avwqok1bJFmvGMCkCE0FqzdY8VMOZpfpR3lwI+CsQ=="],
+    "bun-types": ["bun-types@1.3.5", "", { "dependencies": { "@types/node": "*" } }, "sha512-inmAYe2PFLs0SUbFOWSVD24sg1jFlMPxOjOSSCYqUgn4Hsc3rDc7dFvfVYjFPNHtov6kgUeulV4SxbuIV/stPw=="],
 
     "bun-webgpu": ["bun-webgpu@0.1.4", "", { "dependencies": { "@webgpu/types": "^0.1.60" }, "optionalDependencies": { "bun-webgpu-darwin-arm64": "^0.1.4", "bun-webgpu-darwin-x64": "^0.1.4", "bun-webgpu-linux-x64": "^0.1.4", "bun-webgpu-win32-x64": "^0.1.4" } }, "sha512-Kw+HoXl1PMWJTh9wvh63SSRofTA8vYBFCw0XEP1V1fFdQEDhI8Sgf73sdndE/oDpN/7CMx0Yv/q8FCvO39ROMQ=="],
 
@@ -4459,11 +4387,7 @@
 
     "opencode/@ai-sdk/openai": ["@ai-sdk/openai@2.0.89", "", { "dependencies": { "@ai-sdk/provider": "2.0.1", "@ai-sdk/provider-utils": "3.0.20" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-4+qWkBCbL9HPKbgrUO/F2uXZ8GqrYxHa8SWEYIzxEJ9zvWw3ISr3t1/27O1i8MGSym+PzEyHBT48EV4LAwWaEw=="],
 
-<<<<<<< HEAD
-    "opencode/@ai-sdk/openai-compatible": ["@ai-sdk/openai-compatible@1.0.30", "", { "dependencies": { "@ai-sdk/provider": "2.0.1", "@ai-sdk/provider-utils": "3.0.20" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-thubwhRtv9uicAxSWwNpinM7hiL/0CkhL/ymPaHuKvI494J7HIzn8KQZQ2ymRz284WTIZnI7VMyyejxW4RMM6w=="],
-=======
     "opencode/@ai-sdk/openai-compatible": ["@ai-sdk/openai-compatible@1.0.32", "", { "dependencies": { "@ai-sdk/provider": "2.0.1", "@ai-sdk/provider-utils": "3.0.20" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-YspqqyJPzHjqWrjt4y/Wgc2aJgCcQj5uIJgZpq2Ar/lH30cEVhgE+keePDbjKpetD9UwNggCj7u6kO3unS23OQ=="],
->>>>>>> upstream/dev
 
     "opencontrol/@modelcontextprotocol/sdk": ["@modelcontextprotocol/sdk@1.6.1", "", { "dependencies": { "content-type": "^1.0.5", "cors": "^2.8.5", "eventsource": "^3.0.2", "express": "^5.0.1", "express-rate-limit": "^7.5.0", "pkce-challenge": "^4.1.0", "raw-body": "^3.0.0", "zod": "^3.23.8", "zod-to-json-schema": "^3.24.1" } }, "sha512-oxzMzYCkZHMntzuyerehK3fV6A2Kwh5BD6CGEJSVDU2QNEhfLOptf2X7esQgaHZXHZY0oHmMsOtIDLP71UJXgA=="],
 
