@@ -1,7 +1,7 @@
 import { type ValidComponent, createEffect, createMemo, For, Match, on, onCleanup, Show, Switch } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore, produce } from "solid-js/store"
 import { Dynamic } from "solid-js/web"
-import { checksum } from "@opencode-ai/util/encode"
+import { sampledChecksum } from "@opencode-ai/util/encode"
 import { decode64 } from "@/utils/base64"
 import { showToast } from "@opencode-ai/ui/toast"
 import { LineComment as LineCommentView, LineCommentEditor } from "@opencode-ai/ui/line-comment"
@@ -49,7 +49,7 @@ export function FileTabContent(props: {
     return props.file.get(p)
   })
   const contents = createMemo(() => state()?.content?.content ?? "")
-  const cacheKey = createMemo(() => checksum(contents()))
+  const cacheKey = createMemo(() => sampledChecksum(contents()))
   const isImage = createMemo(() => {
     const c = state()?.content
     return c?.encoding === "base64" && c?.mimeType?.startsWith("image/") && c?.mimeType !== "image/svg+xml"
@@ -112,6 +112,12 @@ export function FileTabContent(props: {
     return props.comments.list(p)
   })
 
+  const commentLayout = createMemo(() => {
+    return fileComments()
+      .map((comment) => `${comment.id}:${comment.selection.start}:${comment.selection.end}`)
+      .join("|")
+  })
+
   const commentedLines = createMemo(() => fileComments().map((comment) => comment.selection))
 
   const [note, setNote] = createStore({
@@ -157,14 +163,38 @@ export function FileTabContent(props: {
       return
     }
 
+    const estimateTop = (range: SelectedLineRange) => {
+      const line = Math.max(range.start, range.end)
+      const height = 24
+      const offset = 2
+      return Math.max(0, (line - 1) * height + offset)
+    }
+
+    const large = contents().length > 500_000
+
     const next: Record<string, number> = {}
     for (const comment of fileComments()) {
       const marker = findMarker(root, comment.selection)
-      if (!marker) continue
-      next[comment.id] = markerTop(el, marker)
+      if (marker) next[comment.id] = markerTop(el, marker)
+      else if (large) next[comment.id] = estimateTop(comment.selection)
     }
 
-    setNote("positions", next)
+    const removed = Object.keys(note.positions).filter((id) => next[id] === undefined)
+    const changed = Object.entries(next).filter(([id, top]) => note.positions[id] !== top)
+    if (removed.length > 0 || changed.length > 0) {
+      setNote(
+        "positions",
+        produce((draft) => {
+          for (const id of removed) {
+            delete draft[id]
+          }
+
+          for (const [id, top] of changed) {
+            draft[id] = top
+          }
+        }),
+      )
+    }
 
     const range = note.commenting
     if (!range) {
@@ -173,12 +203,12 @@ export function FileTabContent(props: {
     }
 
     const marker = findMarker(root, range)
-    if (!marker) {
-      setNote("draftTop", undefined)
+    if (marker) {
+      setNote("draftTop", markerTop(el, marker))
       return
     }
 
-    setNote("draftTop", markerTop(el, marker))
+    setNote("draftTop", large ? estimateTop(range) : undefined)
   }
 
   const scheduleComments = () => {
@@ -186,7 +216,7 @@ export function FileTabContent(props: {
   }
 
   createEffect(() => {
-    fileComments()
+    commentLayout()
     scheduleComments()
   })
 
