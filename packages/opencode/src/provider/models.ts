@@ -119,7 +119,6 @@ export namespace ModelsDev {
   }
 
   export async function refresh() {
-    const file = Bun.file(filepath)
     const result = await fetch(`${url()}/api.json`, {
       headers: {
         "User-Agent": Installation.USER_AGENT,
@@ -131,7 +130,7 @@ export namespace ModelsDev {
       })
     })
     if (result && result.ok) {
-      await Bun.write(file, await result.text())
+      await Filesystem.write(filepath, await result.text())
       ModelsDev.Data.reset()
     }
   }
