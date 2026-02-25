@@ -86,8 +86,8 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.cross }}" = "true" ]; then
-            # Cross-compile: build all targets and pick the right one
-            bun run script/build.ts
+            # Cross-compile using explicit target
+            bun run script/build.ts --single --os=darwin --arch=x64
           else
             bun run script/build.ts --single
           fi

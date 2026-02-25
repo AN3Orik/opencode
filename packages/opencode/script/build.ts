@@ -59,6 +59,8 @@ console.log(`Loaded ${migrations.length} migrations`)
 const singleFlag = process.argv.includes("--single") || (!!process.env.CI && !process.argv.includes("--all"))
 const baselineFlag = process.argv.includes("--baseline")
 const skipInstall = process.argv.includes("--skip-install")
+const osFlag = process.argv.find((arg) => arg.startsWith("--os="))?.split("=")[1]
+const archFlag = process.argv.find((arg) => arg.startsWith("--arch="))?.split("=")[1]
 
 const allTargets: {
   os: string
@@ -117,8 +119,13 @@ const allTargets: {
 
 const targets = singleFlag
   ? allTargets.filter((item) => {
-    if (item.os !== process.platform || item.arch !== process.arch) {
-      return false
+    if (osFlag && item.os !== osFlag) return false
+    if (archFlag && item.arch !== archFlag) return false
+
+    if (!osFlag && !archFlag) {
+      if (item.os !== process.platform || item.arch !== process.arch) {
+        return false
+      }
     }
 
     // When building for the current platform, prefer a single native binary by default.
@@ -165,7 +172,7 @@ for (const item of targets) {
   const bunfsRoot = item.os === "win32" ? "B:/~BUN/root/" : "/$bunfs/root/"
   const workerRelativePath = path.relative(dir, parserWorker).replaceAll("\\", "/")
 
-  await Bun.build({
+  const buildResult = await Bun.build({
     conditions: ["browser"],
     tsconfig: "./tsconfig.json",
     plugins: [solidPlugin],
@@ -190,6 +197,14 @@ for (const item of targets) {
       OPENCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
     },
   })
+
+  if (!buildResult.success) {
+    console.error(`build failed for ${name}`)
+    for (const message of buildResult.logs) {
+      console.error(message)
+    }
+    process.exit(1)
+  }
 
   await $`rm -rf ./dist/${name}/bin/tui`
   await Bun.file(`dist/${name}/package.json`).write(
