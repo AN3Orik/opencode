@@ -49,15 +49,27 @@ console.log("✓ Frontend built to packages/app/dist")
 // Start CLI server (it will serve static files from ../app/dist)
 console.log("\n[2/2] Starting CLI server...")
 const cliProc = Bun.spawn(
-    [bunExe, "run", "dev", "serve", `--port=${port}`],
+    [bunExe, "run", "--conditions=browser", "./src/index.ts", "serve", `--port=${port}`],
     {
         cwd: path.join(rootDir, "packages", "opencode"),
         stdout: "inherit",
-        stderr: "inherit",
+        stderr: "pipe",  // Capture stderr to forward to stdout (UE only captures stdout)
     }
 )
 
-console.log(`\n✓ OpenCode dev server running at http://localhost:${port}`)
+// Forward child stderr to stdout so UE can see error messages
+// UE's CreateProc only pipes stdout; stderr goes nowhere and errors are silently lost
+if (cliProc.stderr) {
+    ;(async () => {
+        try {
+            for await (const chunk of cliProc.stderr) {
+                process.stdout.write(chunk)
+            }
+        } catch {}
+    })()
+}
+
+console.log(`✓ OpenCode dev server starting at http://localhost:${port}`)
 
 // Handle shutdown
 process.on("SIGINT", () => {
@@ -67,4 +79,7 @@ process.on("SIGINT", () => {
 })
 
 // Wait for CLI to exit
-await cliProc.exited
+const exitCode = await cliProc.exited
+if (exitCode !== 0) {
+    console.error(`CLI server exited with code ${exitCode}`)
+}
