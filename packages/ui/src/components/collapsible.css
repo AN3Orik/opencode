@@ -10,6 +10,13 @@
 
   &.tool-collapsible {
     gap: 8px;
+    background-color: var(--surface-inset-base);
+    border: 1px solid var(--border-weaker-base);
+    overflow: clip;
+
+    > [data-slot="collapsible-trigger"] {
+      padding: 6px 8px 6px 12px;
+    }
   }
 
   [data-slot="collapsible-trigger"] {

@@ -897,7 +897,7 @@ export namespace SessionPrompt {
 
         const truncated = await Truncate.output(textParts.join("\n\n"), {}, input.agent)
         const metadata = {
-          ...(result.metadata ?? {}),
+          ...(result._meta ?? result.metadata ?? {}),
           truncated: truncated.truncated,
           ...(truncated.truncated && { outputPath: truncated.outputPath }),
         }

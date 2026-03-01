@@ -135,6 +135,29 @@
     }
   }
 
+  [data-slot="ue-tool-code"] {
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+
+    &[data-scrollable] {
+      max-height: 300px;
+      overflow: auto;
+    }
+
+    pre {
+      margin: 0;
+      padding: 8px 12px;
+    }
+
+    code {
+      font-family: var(--font-family-mono);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  }
+
   [data-slot="basic-tool-tool-arg"] {
     flex-shrink: 1;
     min-width: 0;

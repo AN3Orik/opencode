@@ -47,6 +47,8 @@ import { checksum } from "@opencode-ai/util/encode"
 import { Tooltip } from "./tooltip"
 import { IconButton } from "./icon-button"
 import { TextShimmer } from "./text-shimmer"
+import { getSharedHighlighter } from "@pierre/diffs"
+import { type BundledLanguage } from "shiki"
 
 interface Diagnostic {
   range: {
@@ -1927,3 +1929,126 @@ ToolRegistry.register({
     return <BasicTool icon="brain" status={props.status} trigger={trigger()} hideDetails />
   },
 })
+
+function prettify(raw: string): string {
+  try {
+    return JSON.stringify(JSON.parse(raw), null, 2)
+  } catch {
+    return raw
+  }
+}
+
+async function highlightCode(code: string, lang: string): Promise<string> {
+  const hl = await getSharedHighlighter({ themes: ["OpenCode"], langs: [] })
+  if (!hl.getLoadedLanguages().includes(lang)) {
+    await hl.loadLanguage(lang as BundledLanguage)
+  }
+  return hl.codeToHtml(code, { lang, theme: "OpenCode", tabindex: false })
+}
+
+function humanize(raw: string): string {
+  return raw
+    .split(".")
+    .map((s) =>
+      s
+        .split("_")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" "),
+    )
+    .join(" · ")
+}
+
+// UE MCP Tool Renderers — display metadata from _meta.display, collapsible JSON I/O
+function UEToolRenderer(props: ToolProps) {
+  const display = createMemo(() => (props.metadata?.display ?? {}) as Record<string, string>)
+  const title = createMemo(() => {
+    const raw = display().title ?? props.tool
+    const match = raw.match(/^UE: ([a-z_]+\.[a-z_]+)$/)
+    if (match) return `UE: ${humanize(match[1]!)}`
+    return raw
+  })
+  const subtitle = createMemo(() => display().description ?? "")
+
+  const filtered = createMemo(() =>
+    Object.fromEntries(
+      Object.entries(props.input ?? {}).filter(([k]) => k !== "token" && k !== "_placeholder"),
+    ),
+  )
+
+  const formatted = createMemo(() => {
+    const keys = Object.keys(filtered())
+    if (keys.length === 0) return ""
+    return JSON.stringify(filtered(), null, 2)
+  })
+
+  const pretty = createMemo(() => {
+    if (!props.output) return ""
+    return prettify(props.output)
+  })
+
+  const [inputHtml, setInputHtml] = createSignal("")
+  const [outputHtml, setOutputHtml] = createSignal("")
+
+  createEffect(() => {
+    const code = formatted()
+    if (!code) return
+    highlightCode(code, "json").then(setInputHtml).catch(() => {})
+  })
+
+  createEffect(() => {
+    const code = pretty()
+    if (!code) return
+    highlightCode(code, "json").then(setOutputHtml).catch(() => {})
+  })
+
+  return (
+    <BasicTool icon="mcp" status={props.status} trigger={{ title: title(), subtitle: subtitle() }}>
+      <div data-component="ue-tool-details" style={{ display: "flex", "flex-direction": "column", gap: "8px" }}>
+        <Show when={formatted()}>
+          <div>
+            <div style={{ "font-size": "11px", "font-weight": "600", opacity: "0.6", "margin-bottom": "4px" }}>
+              Input
+            </div>
+            <Show
+              when={inputHtml()}
+              fallback={
+                <pre style={{ margin: "0", "font-size": "12px", "white-space": "pre-wrap", "word-break": "break-all" }}>
+                  <code>{formatted()}</code>
+                </pre>
+              }
+            >
+              <div data-slot="ue-tool-code" innerHTML={inputHtml()} />
+            </Show>
+          </div>
+        </Show>
+        <Show when={pretty()}>
+          <div>
+            <div style={{ "font-size": "11px", "font-weight": "600", opacity: "0.6", "margin-bottom": "4px" }}>
+              Output
+            </div>
+            <Show
+              when={outputHtml()}
+              fallback={
+                <pre style={{ margin: "0", "font-size": "12px", "white-space": "pre-wrap", "word-break": "break-all", "max-height": "300px", overflow: "auto" }}>
+                  <code>{pretty()}</code>
+                </pre>
+              }
+            >
+              <div data-slot="ue-tool-code" data-scrollable innerHTML={outputHtml()} />
+            </Show>
+          </div>
+        </Show>
+      </div>
+    </BasicTool>
+  )
+}
+
+for (const name of [
+  "unreal-engine-mcp_ue_discover",
+  "unreal-engine-mcp_ue_get_category_actions",
+  "unreal-engine-mcp_ue_get_action_details",
+  "unreal-engine-mcp_ue_execute_action",
+  "unreal-engine-mcp_ue_assistant",
+]) {
+  ToolRegistry.register({ name, render: UEToolRenderer })
+}
