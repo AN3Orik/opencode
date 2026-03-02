@@ -1978,8 +1978,8 @@ function UEToolRenderer(props: ToolProps) {
   const display = createMemo(() => (props.metadata?.display ?? {}) as Record<string, string>)
   const title = createMemo(() => {
     const raw = display().title ?? props.tool
-    const match = raw.match(/^UE: ([a-z_]+\.[a-z_]+)$/)
-    if (match) return `UE: ${humanize(match[1]!)}`
+    const match = raw.match(/^(.+?):\s+([a-z_]+\.[a-z_]+)$/)
+    if (match) return `${match[1]}: ${humanize(match[2]!)}`
     return raw
   })
   const subtitle = createMemo(() => display().description ?? "")
@@ -2017,7 +2017,7 @@ function UEToolRenderer(props: ToolProps) {
   })
 
   return (
-    <BasicTool icon="mcp" status={props.status} trigger={{ title: title(), subtitle: subtitle() }}>
+    <BasicTool icon="unreal" status={props.status} trigger={{ title: title(), subtitle: subtitle() }}>
       <div data-component="ue-tool-details" style={{ display: "flex", "flex-direction": "column", gap: "8px" }}>
         <Show when={formatted()}>
           <div>
