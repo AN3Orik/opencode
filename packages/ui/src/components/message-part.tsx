@@ -94,6 +94,7 @@ export interface MessageProps {
   parts: PartType[]
   showAssistantCopyPartID?: string | null
   interrupted?: boolean
+  queued?: boolean
   showReasoningSummaries?: boolean
 }
 
@@ -502,6 +503,7 @@ export function Message(props: MessageProps) {
             message={userMessage() as UserMessage}
             parts={props.parts}
             interrupted={props.interrupted}
+            queued={props.queued}
           />
         )}
       </Match>
@@ -681,7 +683,12 @@ function ContextToolGroup(props: { parts: ToolPart[]; busy?: boolean }) {
   )
 }
 
-export function UserMessageDisplay(props: { message: UserMessage; parts: PartType[]; interrupted?: boolean }) {
+export function UserMessageDisplay(props: {
+  message: UserMessage
+  parts: PartType[]
+  interrupted?: boolean
+  queued?: boolean
+}) {
   const data = useData()
   const dialog = useDialog()
   const i18n = useI18n()
@@ -761,6 +768,7 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
               <div
                 data-slot="user-message-attachment"
                 data-type={file.mime.startsWith("image/") ? "image" : "file"}
+                data-queued={props.queued ? "" : undefined}
                 onClick={() => {
                   if (file.mime.startsWith("image/") && file.url) {
                     openImagePreview(file.url, file.filename)
@@ -789,9 +797,14 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
       <Show when={text()}>
         <>
           <div data-slot="user-message-body">
-            <div data-slot="user-message-text">
+            <div data-slot="user-message-text" data-queued={props.queued ? "" : undefined}>
               <HighlightedText text={text()} references={inlineFiles()} agents={agents()} />
             </div>
+            <Show when={props.queued}>
+              <div data-slot="user-message-queued-indicator">
+                <TextShimmer text={i18n.t("ui.message.queued")} />
+              </div>
+            </Show>
           </div>
           <div data-slot="user-message-copy-wrapper" data-interrupted={props.interrupted ? "" : undefined}>
             <Show when={metaHead() || metaTail()}>
