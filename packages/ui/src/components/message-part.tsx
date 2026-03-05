@@ -54,6 +54,7 @@ import { type BundledLanguage } from "shiki"
 import { AnimatedCountList } from "./tool-count-summary"
 import { ToolStatusTitle } from "./tool-status-title"
 import { animate } from "motion"
+import { useLocation } from "@solidjs/router"
 
 function ShellSubmessage(props: { text: string; animate?: boolean }) {
   let widthRef: HTMLSpanElement | undefined
@@ -1473,6 +1474,7 @@ ToolRegistry.register({
   render(props) {
     const data = useData()
     const i18n = useI18n()
+    const location = useLocation()
     const childSessionId = () => props.metadata.sessionId as string | undefined
     const title = createMemo(() => i18n.t("ui.tool.agent", { type: props.input.subagent_type || props.tool }))
     const description = createMemo(() => {
@@ -1489,8 +1491,7 @@ ToolRegistry.register({
       const direct = data.sessionHref?.(sessionId)
       if (direct) return direct
 
-      if (typeof window === "undefined") return
-      const path = window.location.pathname
+      const path = location.pathname
       const idx = path.indexOf("/session")
       if (idx === -1) return
       return `${path.slice(0, idx)}/session/${sessionId}`
