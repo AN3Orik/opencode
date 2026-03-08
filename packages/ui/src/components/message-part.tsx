@@ -1,4 +1,16 @@
-import { Component, createEffect, createMemo, createSignal, For, Match, on, Show, Switch, type JSX } from "solid-js"
+import {
+  Component,
+  createEffect,
+  createMemo,
+  createSignal,
+  For,
+  Match,
+  on,
+  onMount,
+  Show,
+  Switch,
+  type JSX,
+} from "solid-js"
 import stripAnsi from "strip-ansi"
 import { createStore } from "solid-js/store"
 import { Dynamic } from "solid-js/web"
@@ -20,7 +32,7 @@ import { useData } from "../context"
 import { useFileComponent } from "../context/file"
 import { useDialog } from "../context/dialog"
 import { type UiI18n, useI18n } from "../context/i18n"
-import { GenericTool, ToolCall } from "./basic-tool"
+import { BasicTool, GenericTool, ToolCall } from "./basic-tool"
 import { Accordion } from "./accordion"
 import { StickyAccordionHeader } from "./sticky-accordion-header"
 import { Card } from "./card"
@@ -2205,7 +2217,7 @@ function UEToolRenderer(props: ToolProps) {
   })
 
   return (
-    <BasicTool icon="unreal" status={props.status} trigger={{ title: title(), subtitle: subtitle() }}>
+    <BasicTool variant="panel" icon="unreal" status={props.status} trigger={{ title: title(), subtitle: subtitle() }}>
       <div data-component="ue-tool-details" style={{ display: "flex", "flex-direction": "column", gap: "8px" }}>
         <Show when={formatted()}>
           <div>

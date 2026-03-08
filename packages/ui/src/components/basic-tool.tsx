@@ -10,14 +10,48 @@ import {
   splitProps,
   Switch,
   type JSX,
+  type Accessor,
 } from "solid-js"
 import { animate, type AnimationPlaybackControls, tunableSpringValue, COLLAPSIBLE_SPRING } from "./motion"
 import { Collapsible } from "./collapsible"
-import { Icon } from "./icon"
+import { Icon, type IconProps } from "./icon"
 import { TextShimmer } from "./text-shimmer"
+import { hold } from "./tool-utils"
+
+export type TriggerTitle = {
+  title: string
+  titleClass?: string
+  subtitle?: string
+  subtitleClass?: string
+  args?: string[]
+  argsClass?: string
+  action?: JSX.Element
+}
+
+const isTriggerTitle = (val: any): val is TriggerTitle => {
+  return (
+    typeof val === "object" && val !== null && "title" in val && (typeof Node === "undefined" || !(val instanceof Node))
+  )
+}
+
+interface ToolCallPanelBaseProps {
+  icon: IconProps["name"]
+  trigger: TriggerTitle | JSX.Element
+  children?: JSX.Element
+  status?: string
+  animate?: boolean
+  hideDetails?: boolean
+  defaultOpen?: boolean
+  forceOpen?: boolean
+  defer?: boolean
+  locked?: boolean
+  watchDetails?: boolean
+  springContent?: boolean
+  onSubtitleClick?: () => void
+}
 
 function ToolCallTriggerBody(props: {
-  icon: string
+  icon: IconProps["name"]
   trigger: TriggerTitle | JSX.Element
   pending: boolean
   onSubtitleClick?: () => void
@@ -303,7 +337,7 @@ function args(input: Record<string, unknown> | undefined) {
 
 export interface ToolCallRowProps {
   variant: "row"
-  icon: string
+  icon: IconProps["name"]
   trigger: TriggerTitle | JSX.Element
   status?: string
   animate?: boolean
@@ -375,4 +409,8 @@ export function GenericTool(props: {
       }}
     />
   )
+}
+
+export function BasicTool(props: ToolCallPanelProps) {
+  return <ToolCallPanel {...props} />
 }

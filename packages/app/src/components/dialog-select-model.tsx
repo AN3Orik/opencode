@@ -100,6 +100,7 @@ export function ModelSelectorPopover(props: {
     dismiss: null,
   })
   const dialog = useDialog()
+
   const handleManage = () => {
     setStore("open", false)
     dialog.show(() => <DialogManageModels />)
@@ -110,7 +111,6 @@ export function ModelSelectorPopover(props: {
     dialog.show(() => <DialogSelectProvider />)
   }
   const language = useLanguage()
-
 
   return (
     <Kobalte
@@ -178,13 +178,11 @@ export function ModelSelectorPopover(props: {
               </div>
             }
           />
-
         </Kobalte.Content>
       </Kobalte.Portal>
     </Kobalte>
   )
 }
-
 
 export const DialogSelectModel: Component<{ provider?: string }> = (props) => {
   const dialog = useDialog()

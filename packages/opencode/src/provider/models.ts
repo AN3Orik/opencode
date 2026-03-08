@@ -7,7 +7,6 @@ import { Flag } from "../flag/flag"
 import { lazy } from "@/util/lazy"
 import { Filesystem } from "../util/filesystem"
 
-
 // Try to import bundled snapshot (generated at build time)
 // Falls back to undefined in dev mode when snapshot doesn't exist
 /* @ts-ignore */
@@ -87,35 +86,21 @@ export namespace ModelsDev {
   }
 
   export const Data = lazy(async () => {
-    const targetPath = Flag.OPENCODE_MODELS_PATH ?? filepath
-    const result = await Filesystem.readJson(targetPath).catch(() => {})
-    if (result) return result as Record<string, Provider>
-
+    const result = await Filesystem.readJson(Flag.OPENCODE_MODELS_PATH ?? filepath).catch(() => {})
+    if (result) return result
     // @ts-ignore
     const snapshot = await import("./models-snapshot")
       .then((m) => m.snapshot as Record<string, unknown>)
       .catch(() => undefined)
-    if (snapshot) return snapshot as Record<string, Provider>
-
-    if (Flag.OPENCODE_DISABLE_MODELS_FETCH) return {} as Record<string, Provider>
-
-    // Direct fetch fallback
-    const endpoint = url()
-    const response = await fetch(`${endpoint}/api.json`).catch(() => null)
-    if (response?.ok) {
-      const json = await response.text()
-      await Filesystem.write(targetPath, json)
-      return JSON.parse(json) as Record<string, Provider>
-    }
-
-    return {} as Record<string, Provider>
+    if (snapshot) return snapshot
+    if (Flag.OPENCODE_DISABLE_MODELS_FETCH) return {}
+    const json = await fetch(`${url()}/api.json`).then((x) => x.text())
+    return JSON.parse(json)
   })
-
 
   export async function get() {
     const result = await Data()
     return result as Record<string, Provider>
-
   }
 
   export async function refresh() {
