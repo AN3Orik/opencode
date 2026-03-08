@@ -98,8 +98,7 @@ export function DialogConnectProvider(props: { provider: string }) {
 
   const methodLabel = (value?: { type?: string; label?: string }) => {
     if (!value) return ""
-    if (value.type === "api") return language.t("provider.connect.method.apiKey")
-    return value.label ?? ""
+    return value.label ?? (value.type === "api" ? language.t("provider.connect.method.apiKey") : "")
   }
 
   function formatError(value: unknown, fallback: string): string {
@@ -242,6 +241,7 @@ export function DialogConnectProvider(props: { provider: string }) {
       value: "",
       error: undefined as string | undefined,
     })
+    const activeMethodLabel = createMemo(() => method()?.label?.trim() ?? "")
 
     async function handleSubmit(e: SubmitEvent) {
       e.preventDefault()
@@ -292,7 +292,11 @@ export function DialogConnectProvider(props: { provider: string }) {
           <TextField
             autofocus
             type="text"
-            label={language.t("provider.connect.apiKey.label", { provider: provider().name })}
+            label={
+              activeMethodLabel()
+                ? activeMethodLabel()
+                : language.t("provider.connect.apiKey.label", { provider: provider().name })
+            }
             placeholder={language.t("provider.connect.apiKey.placeholder")}
             name="apiKey"
             value={formStore.value}
