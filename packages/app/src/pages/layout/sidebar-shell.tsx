@@ -11,7 +11,6 @@ import { ConstrainDragXAxis } from "@/utils/solid-dnd"
 import { IconButton } from "@opencode-ai/ui/icon-button"
 import { Tooltip, TooltipKeybind } from "@opencode-ai/ui/tooltip"
 import { type LocalProject } from "@/context/layout"
-import { sidebarExpanded } from "./sidebar-shell-helpers"
 
 export const SidebarContent = (props: {
   mobile?: boolean
@@ -34,7 +33,7 @@ export const SidebarContent = (props: {
   renderPanel: () => JSX.Element
   hideOpenProject?: Accessor<boolean>
 }): JSX.Element => {
-  const expanded = createMemo(() => sidebarExpanded(props.mobile, props.opened()))
+  const expanded = createMemo(() => !!props.mobile || props.opened())
   const placement = () => (props.mobile ? "bottom" : "right")
   let panel: HTMLDivElement | undefined
 
@@ -120,7 +119,7 @@ export const SidebarContent = (props: {
         ref={(el) => {
           panel = el
         }}
-        classList={{ "flex h-full min-h-0 min-w-0 overflow-hidden": true, "pointer-events-none": !expanded() }}
+        classList={{ "flex-1 flex h-full min-h-0 min-w-0 overflow-hidden": true, "pointer-events-none": !expanded() }}
         aria-hidden={!expanded()}
       >
         {props.renderPanel()}

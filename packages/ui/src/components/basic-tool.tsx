@@ -11,6 +11,8 @@ import {
   splitProps,
 } from "solid-js"
 import { animate, type AnimationPlaybackControls } from "motion"
+import { useI18n } from "../context/i18n"
+import { createStore } from "solid-js/store"
 import { Collapsible } from "./collapsible"
 import { Icon, type IconProps } from "./icon"
 import { TextShimmer } from "./text-shimmer"
@@ -121,8 +123,12 @@ function ToolCallTriggerBody(props: {
 }
 
 export function BasicTool(props: BasicToolProps) {
-  const [open, setOpen] = createSignal(props.defaultOpen ?? false)
-  const [ready, setReady] = createSignal(open())
+  const [state, setState] = createStore({
+    open: props.defaultOpen ?? false,
+    ready: props.defaultOpen ?? false,
+  })
+  const open = () => state.open
+  const ready = () => state.ready
   const pending = () => props.status === "pending" || props.status === "running"
 
   let frame: number | undefined
@@ -136,7 +142,7 @@ export function BasicTool(props: BasicToolProps) {
   onCleanup(cancel)
 
   createEffect(() => {
-    if (props.forceOpen) setOpen(true)
+    if (props.forceOpen) setState("open", true)
   })
 
   createEffect(
@@ -146,7 +152,7 @@ export function BasicTool(props: BasicToolProps) {
         if (!props.defer) return
         if (!value) {
           cancel()
-          setReady(false)
+          setState("ready", false)
           return
         }
 
@@ -154,7 +160,7 @@ export function BasicTool(props: BasicToolProps) {
         frame = requestAnimationFrame(() => {
           frame = undefined
           if (!open()) return
-          setReady(true)
+          setState("ready", true)
         })
       },
       { defer: true },
@@ -196,7 +202,7 @@ export function BasicTool(props: BasicToolProps) {
   const handleOpenChange = (value: boolean) => {
     if (pending()) return
     if (props.locked && !value) return
-    setOpen(value)
+    setState("open", value)
   }
 
   return (
@@ -319,13 +325,15 @@ export function GenericTool(props: {
   hideDetails?: boolean
   input?: Record<string, unknown>
 }) {
+  const i18n = useI18n()
+
   return (
     <ToolCall
       variant={props.hideDetails ? "row" : "panel"}
       icon="mcp"
       status={props.status}
       trigger={{
-        title: `Called \`${props.tool}\``,
+        title: i18n.t("ui.basicTool.called", { tool: props.tool }),
         subtitle: label(props.input),
         args: args(props.input),
       }}
