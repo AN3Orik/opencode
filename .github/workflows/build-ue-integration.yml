@@ -84,12 +84,14 @@ jobs:
       - name: Build CLI
         working-directory: packages/opencode
         shell: bash
+        env:
+          OPENCODE_VERSION: ${{ steps.version.outputs.version }}
         run: |
           if [ "${{ matrix.cross }}" = "true" ]; then
             # Cross-compile using explicit target
-            bun run script/build.ts --single --os=darwin --arch=x64
+            bun run script/build.ts --single --os=darwin --arch=x64 --skip-install
           else
-            bun run script/build.ts --single
+            bun run script/build.ts --single --skip-install
           fi
 
       - name: Prepare release package
