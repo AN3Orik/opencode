@@ -32,9 +32,6 @@
     "@tailwindcss/vite": "catalog:",
     "@tsconfig/node22": "catalog:",
     "@types/bun": "catalog:",
-    "@types/morphdom": "catalog:",
-
-
     "@types/katex": "0.16.7",
     "@types/luxon": "catalog:",
     "@typescript/native-preview": "catalog:",
