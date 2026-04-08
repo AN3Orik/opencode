@@ -9,7 +9,8 @@
   overflow: visible;
 
   &.tool-collapsible {
-    gap: 8px;
+    --tool-content-gap: 8px;
+    gap: var(--tool-content-gap);
     background-color: var(--surface-inset-base);
     border: 1px solid var(--border-weaker-base);
     overflow: clip;
@@ -71,6 +72,11 @@
     }
     &[data-disabled] {
       cursor: not-allowed;
+    }
+
+    &[data-hide-details="true"] {
+      height: auto;
+      align-items: stretch;
     }
 
     [data-slot="collapsible-arrow"] {

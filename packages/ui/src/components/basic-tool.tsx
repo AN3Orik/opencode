@@ -45,6 +45,9 @@ export interface BasicToolProps {
   locked?: boolean
   animated?: boolean
   onSubtitleClick?: () => void
+  onTriggerClick?: JSX.EventHandlerUnion<HTMLElement, MouseEvent>
+  triggerHref?: string
+  clickable?: boolean
 }
 
 const SPRING = { type: "spring" as const, visualDuration: 0.35, bounce: 0 }
@@ -55,6 +58,7 @@ function ToolCallTriggerBody(props: {
   pending: boolean
   onSubtitleClick?: () => void
   arrow?: boolean
+  clickable?: boolean
 }) {
   return (
     <div data-component="tool-trigger" data-arrow={props.arrow ? "" : undefined}>
@@ -205,17 +209,41 @@ export function BasicTool(props: BasicToolProps) {
     setState("open", value)
   }
 
+  const trigger = () => (
+    <ToolCallTriggerBody
+      icon={props.icon}
+      trigger={props.trigger}
+      pending={pending()}
+      onSubtitleClick={props.onSubtitleClick}
+      arrow={!!props.children && !props.hideDetails && !props.locked && !pending()}
+      clickable={props.clickable}
+    />
+  )
+
   return (
     <Collapsible open={open()} onOpenChange={handleOpenChange} class="tool-collapsible">
-      <Collapsible.Trigger>
-        <ToolCallTriggerBody
-          icon={props.icon}
-          trigger={props.trigger}
-          pending={pending()}
-          onSubtitleClick={props.onSubtitleClick}
-          arrow={!!props.children && !props.hideDetails && !props.locked && !pending()}
-        />
-      </Collapsible.Trigger>
+      <Show
+        when={props.triggerHref}
+        fallback={
+          <Collapsible.Trigger
+            data-hide-details={props.hideDetails ? "true" : undefined}
+            onClick={props.onTriggerClick}
+          >
+            {trigger()}
+          </Collapsible.Trigger>
+        }
+      >
+        {(href) => (
+          <Collapsible.Trigger
+            as="a"
+            href={href()}
+            data-hide-details={props.hideDetails ? "true" : undefined}
+            onClick={props.onTriggerClick}
+          >
+            {trigger()}
+          </Collapsible.Trigger>
+        )}
+      </Show>
       <Show when={props.animated && props.children && !props.hideDetails}>
         <div
           ref={contentRef}
